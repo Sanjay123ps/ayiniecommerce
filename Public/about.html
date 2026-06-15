@@ -1,0 +1,259 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>About Us – Ayini Home Products</title>
+  <meta name="description" content="Learn about Ayini Home Products – a homemade food and personal care brand from Coimbatore, Tamil Nadu.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .about-hero { background:linear-gradient(135deg,var(--green) 0%,var(--green-light) 100%); padding:72px 5%; text-align:center; color:white; }
+    .about-hero h1 { font-size:clamp(2rem,4vw,3rem); margin-bottom:16px; }
+    .about-hero p  { font-size:1.05rem; opacity:.85; max-width:560px; margin:0 auto; line-height:1.8; }
+    .story-grid { display:grid; grid-template-columns:1fr 1fr; gap:56px; align-items:center; }
+    .story-visual { background:linear-gradient(135deg,#f0ebe0,#e3d9c6); border-radius:var(--radius-lg); aspect-ratio:1; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:20px; }
+    .story-visual .big-emoji { font-size:6rem; }
+    .story-visual .emoji-row { display:flex; gap:16px; font-size:2.5rem; }
+    .story-tag { display:inline-block; background:rgba(200,136,42,.12); color:var(--amber); border:1px solid rgba(200,136,42,.3); padding:5px 14px; border-radius:20px; font-size:.78rem; font-weight:700; text-transform:uppercase; letter-spacing:.06em; margin-bottom:14px; }
+    .story-text h2 { font-size:clamp(1.6rem,3vw,2.2rem); color:var(--green); margin-bottom:16px; }
+    .story-text p  { color:var(--gray-600); line-height:1.8; margin-bottom:14px; font-size:.97rem; }
+    .values-grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:20px; }
+    .value-card { background:white; border:1px solid var(--gray-200); border-radius:var(--radius-lg); padding:28px 22px; text-align:center; transition:transform var(--transition),box-shadow var(--transition); }
+    .value-card:hover { transform:translateY(-4px); box-shadow:var(--shadow-md); }
+    .value-card .icon { font-size:2.4rem; margin-bottom:12px; }
+    .value-card h3 { font-size:1rem; color:var(--green); margin-bottom:8px; font-family:var(--font-display); }
+    .value-card p  { font-size:.82rem; color:var(--gray-500); line-height:1.6; }
+    .stat-strip { background:var(--green); }
+    .stat-inner { max-width:1200px; margin:0 auto; padding:40px 5%; display:grid; grid-template-columns:repeat(4,1fr); gap:0; }
+    .stat-item { text-align:center; padding:0 20px; border-right:1px solid rgba(255,255,255,.15); }
+    .stat-item:last-child { border-right:none; }
+    .stat-num { font-family:var(--font-display); font-size:2.4rem; font-weight:800; color:var(--amber-light); display:block; line-height:1; margin-bottom:6px; }
+    .stat-label { font-size:.82rem; color:rgba(255,255,255,.75); font-weight:500; }
+    .process-steps { display:grid; grid-template-columns:repeat(auto-fit,minmax(200px,1fr)); gap:0; position:relative; }
+    .process-steps::before { content:''; position:absolute; top:36px; left:10%; right:10%; height:2px; background:linear-gradient(90deg,var(--green),var(--amber)); opacity:.2; pointer-events:none; }
+    .process-step { text-align:center; padding:24px 16px; position:relative; }
+    .step-circle { width:72px; height:72px; background:white; border:3px solid var(--green); border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:2rem; margin:0 auto 16px; transition:background var(--transition),transform var(--transition); }
+    .process-step:hover .step-circle { background:var(--green); transform:scale(1.08); }
+    .process-step h4 { font-size:.92rem; color:var(--green); font-weight:700; margin-bottom:6px; font-family:var(--font-body); }
+    .process-step p  { font-size:.78rem; color:var(--gray-500); line-height:1.6; }
+    .team-section { background:var(--gray-50); }
+    .promise-card { background:linear-gradient(135deg,var(--green),var(--green-light)); border-radius:var(--radius-lg); padding:48px; text-align:center; color:white; }
+    .promise-card h2 { margin-bottom:14px; font-size:clamp(1.5rem,3vw,2rem); }
+    .promise-card p  { opacity:.85; max-width:520px; margin:0 auto 28px; line-height:1.8; }
+    .promise-items { display:grid; grid-template-columns:repeat(auto-fit,minmax(160px,1fr)); gap:16px; margin-bottom:32px; }
+    .promise-item { background:rgba(255,255,255,.1); border:1px solid rgba(255,255,255,.15); border-radius:var(--radius); padding:16px; }
+    .promise-item .icon { font-size:1.8rem; margin-bottom:6px; }
+    .promise-item p { font-size:.82rem; opacity:.9; margin:0; font-weight:500; }
+    @media(max-width:900px){ .story-grid{grid-template-columns:1fr;} .story-visual{aspect-ratio:auto;padding:48px;} .stat-inner{grid-template-columns:repeat(2,1fr); gap:24px;} .stat-item{border-right:none;} }
+    @media(max-width:600px){ .stat-inner{grid-template-columns:1fr 1fr;} .process-steps::before{display:none;} }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini Logo" onerror="this.style.cssText='width:44px;height:44px;border-radius:50%;background:var(--green);'">
+      <div class="logo-text">
+        <strong>Ayini <span style="color:var(--amber)">Home</span> 🌿</strong>
+        <span>Homemade · Natural · Coimbatore</span>
+      </div>
+    </a>
+    <nav class="header-actions">
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></a>
+    </nav>
+  </div>
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#">Categories ▾</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="masala.html">🌶️ Masalas & Spices</a></li>
+          <li><a href="millets.html">🌾 Rice, Millets & Pulses</a></li>
+          <li><a href="soap.html">🧼 Soap & Herbal Care</a></li>
+          <li><a href="oil.html">🫙 Cold Press Oils</a></li>
+          <li><a href="flour.html">🌾 Flour Items</a></li>
+          <li><a href="noodles.html">🍜 Noodles & Semiya</a></li>
+        </ul>
+      </div>
+      <a href="about.html" class="active">About Us</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<div class="about-hero">
+  <h1>Pure Goodness,<br>Straight from <span style="color:var(--amber-light)">Our Home</span></h1>
+  <p>A small family brand from Coimbatore making traditional homemade food and personal care products — the way it was always meant to be.</p>
+</div>
+
+<!-- Our Story -->
+<section class="section" style="background:white;">
+  <div class="container">
+    <div class="story-grid fade-up">
+      <div class="story-visual">
+        <div class="big-emoji">🏠</div>
+        <div class="emoji-row">🌶️<span>🫙</span><span>🧼</span><span>🫙</span><span>🌾</span></div>
+        <p style="font-size:.85rem;color:var(--gray-500);text-align:center;padding:0 24px;">Handcrafted in Coimbatore since 2020</p>
+      </div>
+      <div class="story-text">
+        <span class="story-tag">Our Story</span>
+        <h2>Born in a Kitchen,<br>Built on Trust</h2>
+        <p>Ayini Home Products started with a simple question: <em>"Why can't we buy the same quality masalas and oils our grandmothers used to make?"</em></p>
+        <p>What began as small batches for family and friends in PeriyanaickenPalayam, Coimbatore slowly grew into something bigger — a brand built entirely on word of mouth and the trust of our customers.</p>
+        <p>Every product we make is prepared in small batches at home, using traditional recipes passed down through generations. No factories. No preservatives. No shortcuts.</p>
+        <div style="display:flex;gap:12px;margin-top:24px;flex-wrap:wrap;">
+          <a href="masala.html" class="btn btn-primary">Shop Products</a>
+          <a href="contact.html" class="btn btn-outline">Talk to Us</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Stats -->
+<div class="stat-strip">
+  <div class="stat-inner">
+    <div class="stat-item fade-up d1">
+      <span class="stat-num">500+</span>
+      <span class="stat-label">Happy Customers</span>
+    </div>
+    <div class="stat-item fade-up d2">
+      <span class="stat-num">63+</span>
+      <span class="stat-label">Homemade Products</span>
+    </div>
+    <div class="stat-item fade-up d3">
+      <span class="stat-num">5+</span>
+      <span class="stat-label">Years of Tradition</span>
+    </div>
+    <div class="stat-item fade-up d4">
+      <span class="stat-num">0</span>
+      <span class="stat-label">Preservatives Used</span>
+    </div>
+  </div>
+</div>
+
+<!-- Values -->
+<section class="section" style="background:var(--cream);">
+  <div class="container">
+    <div class="section-header fade-up">
+      <h2>What We Stand For</h2>
+      <span class="underline"></span>
+      <p style="margin-top:12px;">Every decision we make comes back to these four values.</p>
+    </div>
+    <div class="values-grid">
+      <div class="value-card fade-up d1">
+        <div class="icon">🌿</div>
+        <h3>100% Natural</h3>
+        <p>We use only real, natural ingredients. No artificial colours, flavours or chemicals — ever.</p>
+      </div>
+      <div class="value-card fade-up d2">
+        <div class="icon">🚫</div>
+        <h3>No Preservatives</h3>
+        <p>Our products are made in small batches so they're always fresh — no need for preservatives.</p>
+      </div>
+      <div class="value-card fade-up d3">
+        <div class="icon">🏺</div>
+        <h3>Traditional Recipes</h3>
+        <p>Age-old recipes passed down through generations. The same taste your family grew up with.</p>
+      </div>
+      <div class="value-card fade-up d4">
+        <div class="icon">❤️</div>
+        <h3>Made with Love</h3>
+        <p>Every product is handcrafted with care and attention. You can taste the difference.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- How We Make It -->
+<section class="section" style="background:white;">
+  <div class="container">
+    <div class="section-header fade-up">
+      <h2>How We Make Our Products</h2>
+      <span class="underline"></span>
+    </div>
+    <div class="process-steps">
+      <div class="process-step fade-up d1">
+        <div class="step-circle">🌾</div>
+        <h4>Source</h4>
+        <p>We hand-pick fresh, natural ingredients from trusted local farmers and markets in Coimbatore.</p>
+      </div>
+      <div class="process-step fade-up d2">
+        <div class="step-circle">☀️</div>
+        <h4>Clean & Dry</h4>
+        <p>Ingredients are thoroughly cleaned and sun-dried the traditional way — no industrial drying.</p>
+      </div>
+      <div class="process-step fade-up d3">
+        <div class="step-circle">🪨</div>
+        <h4>Grind & Blend</h4>
+        <p>Stone-ground or cold-pressed in small batches to preserve natural flavours and nutrients.</p>
+      </div>
+      <div class="process-step fade-up d4">
+        <div class="step-circle">📦</div>
+        <h4>Pack Fresh</h4>
+        <p>Hygienically packed and labelled by hand, then shipped directly from our home to yours.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Promise -->
+<section class="section" style="background:var(--cream);">
+  <div class="container">
+    <div class="promise-card fade-up">
+      <h2>Our Promise to You</h2>
+      <p>We treat every customer like family. If you're not happy with any product, we'll make it right.</p>
+      <div class="promise-items">
+        <div class="promise-item"><div class="icon">✅</div><p>Quality Guaranteed</p></div>
+        <div class="promise-item"><div class="icon">🚴</div><p>Fast Delivery</p></div>
+        <div class="promise-item"><div class="icon">↩️</div><p>Easy Returns</p></div>
+        <div class="promise-item"><div class="icon">💬</div><p>WhatsApp Support</p></div>
+      </div>
+      <a href="https://wa.me/917397130039" target="_blank" class="btn btn-amber">💬 Chat with Us on WhatsApp</a>
+    </div>
+  </div>
+</section>
+
+<div class="footer-strip">
+  <div class="footer-strip-inner">
+    <div class="fs-item"><span class="fs-icon">🔒</span><div><strong>Secure Payment</strong><span>100% secure transactions</span></div></div>
+    <div class="fs-item"><span class="fs-icon">🚴</span><div><strong>Fast Shipping</strong><span>Quick and safe delivery</span></div></div>
+    <div class="fs-item"><span class="fs-icon">↩️</span><div><strong>Easy Returns</strong><span>Hassle-free returns</span></div></div>
+    <div class="fs-item"><span class="fs-icon">💬</span><div><strong>Support 24/7</strong><span>We're here to help</span></div></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini">
+          <span>Ayini Home Products</span>
+        </div>
+        <p>Traditional homemade products from Coimbatore — masalas, millets, herbal soaps and cold-press oils.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/ayini_home_products/" target="_blank" class="social-icon ig" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.facebook.com/profile.php?id=61573521272015" target="_blank" class="social-icon fb" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://wa.me/917397130039" target="_blank" class="social-icon wa" aria-label="WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="masala.html">Masalas & Spices</a></li><li><a href="millets.html">Rice, Millets & Pulses</a></li><li><a href="soap.html">Soap & Herbal Care</a></li><li><a href="oil.html">Cold Press Oils</a></li><li><a href="flour.html">Flour Items</a></li><li><a href="noodles.html">Noodles & Semiya</a></li></ul></div>
+      <div class="footer-col"><h4>Info</h4><ul><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="login.html">Login</a></li><li><a href="signup.html">Sign Up</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+917397130039">📞 +91 73971 30039</a></li><li><a href="mailto:ayinihomeproducts@gmail.com">✉️ Email Us</a></li><li><a href="https://wa.me/917397130039">💬 WhatsApp</a></li></ul><p style="margin-top:14px;font-size:.78rem;color:#6b7280;">PeriyanaickenPalayam,<br>Coimbatore, Tamil Nadu</p></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Ayini Home Products. All rights reserved.</p><p>Made with ❤️ in Coimbatore</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/917397130039?text=Hi%20Ayini!%20I%20want%20to%20know%20more%20about%20your%20products." target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Order on WhatsApp
+</a>
+
+<script src="api.js"></script>
+</body>
+</html>

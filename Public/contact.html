@@ -1,0 +1,286 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Contact Us – Ayini Home Products</title>
+  <meta name="description" content="Contact Ayini Home Products – Phone, WhatsApp and email support from Coimbatore.">
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .contact-grid { display:grid; grid-template-columns:1fr 1.5fr; gap:28px; align-items:start; }
+    .info-card { background:linear-gradient(160deg,var(--green),var(--green-light)); border-radius:var(--radius-lg); padding:36px; color:white; position:sticky; top:100px; }
+    .info-card h2 { font-size:1.6rem; margin-bottom:10px; }
+    .info-card > p { opacity:.85; line-height:1.75; margin-bottom:28px; font-size:.95rem; }
+    .cd { display:flex; gap:14px; margin-bottom:22px; align-items:flex-start; }
+    .cd-icon { width:42px; height:42px; background:rgba(255,255,255,.15); border-radius:var(--radius); display:flex; align-items:center; justify-content:center; font-size:1.1rem; flex-shrink:0; }
+    .cd-body strong { display:block; font-size:.88rem; font-weight:700; margin-bottom:3px; }
+    .cd-body p,.cd-body a { font-size:.85rem; opacity:.8; color:white; line-height:1.5; }
+    .cd-body a:hover { opacity:1; text-decoration:underline; }
+    .map-embed { margin-top:24px; border-radius:var(--radius); overflow:hidden; }
+    .form-card { background:white; border-radius:var(--radius-lg); box-shadow:var(--shadow-sm); border:1px solid var(--gray-200); padding:36px; }
+    .form-card h2 { font-size:1.4rem; color:var(--green); margin-bottom:6px; }
+    .form-card .sub { font-size:.88rem; color:var(--gray-500); margin-bottom:28px; }
+    .fg { margin-bottom:18px; }
+    .fg label { display:block; font-size:.83rem; font-weight:600; color:var(--gray-600); margin-bottom:7px; }
+    .fg input,.fg select,.fg textarea { width:100%; padding:11px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font-body); font-size:.92rem; outline:none; transition:border-color var(--transition),box-shadow var(--transition); background:white; color:var(--text); }
+    .fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(46,107,69,.08); }
+    .fg input.err { border-color:#ef4444; }
+    .fg textarea { resize:vertical; min-height:130px; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .alert { padding:13px 16px; border-radius:var(--radius); font-size:.88rem; font-weight:500; display:none; margin-bottom:18px; }
+    .alert.success { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+    .alert.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+    .send-btn { width:100%; padding:13px; background:var(--green); color:white; border:none; border-radius:var(--radius); font-family:var(--font-body); font-size:1rem; font-weight:700; cursor:pointer; transition:background var(--transition),transform .1s; display:flex; align-items:center; justify-content:center; gap:8px; }
+    .send-btn:hover:not(:disabled) { background:var(--green-mid); transform:translateY(-1px); }
+    .send-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    .quick-channels { display:grid; grid-template-columns:1fr 1fr; gap:12px; margin-bottom:28px; }
+    .qc-btn { display:flex; align-items:center; gap:10px; padding:13px 16px; border-radius:var(--radius); border:1.5px solid var(--gray-200); text-decoration:none; color:var(--text); font-weight:600; font-size:.88rem; transition:all var(--transition); }
+    .qc-btn:hover { transform:translateY(-2px); box-shadow:var(--shadow-md); }
+    .qc-btn.wa { border-color:#25d366; background:#f0fdf4; color:#166534; }
+    .qc-btn.wa:hover { background:#dcfce7; }
+    .qc-btn.ph { border-color:var(--green); background:#f0fdf4; color:var(--green); }
+    .qc-btn.ph:hover { background:#dcfce7; }
+    .qc-btn.ig { border-color:#e6683c; background:#fff7f5; color:#9a3412; }
+    .qc-btn.ig:hover { background:#ffe4da; }
+    .qc-btn.em { border-color:var(--gray-300); background:var(--gray-50); }
+    .qc-btn.em:hover { background:var(--gray-100); }
+    .divider-text { display:flex; align-items:center; gap:12px; margin:20px 0; color:var(--gray-400); font-size:.82rem; }
+    .divider-text::before,.divider-text::after { content:''; flex:1; height:1px; background:var(--gray-200); }
+    @media(max-width:900px){ .contact-grid{grid-template-columns:1fr;} .info-card{position:static;} }
+    @media(max-width:600px){ .two-col{grid-template-columns:1fr;} .quick-channels{grid-template-columns:1fr 1fr;} }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini Logo" onerror="this.style.cssText='width:44px;height:44px;border-radius:50%;background:var(--green);'">
+      <div class="logo-text">
+        <strong>Ayini <span style="color:var(--amber)">Home</span> 🌿</strong>
+        <span>Homemade · Natural · Coimbatore</span>
+      </div>
+    </a>
+    <nav class="header-actions">
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></a>
+    </nav>
+  </div>
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#">Categories ▾</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="masala.html">🌶️ Masalas & Spices</a></li>
+          <li><a href="millets.html">🌾 Rice, Millets & Pulses</a></li>
+          <li><a href="soap.html">🧼 Soap & Herbal Care</a></li>
+          <li><a href="oil.html">🫙 Cold Press Oils</a></li>
+          <li><a href="flour.html">🌾 Flour Items</a></li>
+          <li><a href="noodles.html">🍜 Noodles & Semiya</a></li>
+        </ul>
+      </div>
+      <a href="about.html">About Us</a>
+      <a href="contact.html" class="active">Contact</a>
+    </div>
+  </nav>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>📞 Contact Us</h1>
+    <p>We'd love to hear from you — questions, orders, or just a hello!</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>Contact</span></div>
+  </div>
+</div>
+
+<section class="section" style="background:var(--cream);">
+  <div class="container">
+    <div class="contact-grid">
+
+      <!-- Left: Info -->
+      <div class="info-card">
+        <h2>Get in Touch</h2>
+        <p>Have a question about our products or want to place a bulk order? We're always happy to help.</p>
+        <div class="cd">
+          <div class="cd-icon">📞</div>
+          <div class="cd-body">
+            <strong>Phone / WhatsApp</strong>
+            <p><a href="tel:+917397130039">+91 73971 30039</a></p>
+          </div>
+        </div>
+        <div class="cd">
+          <div class="cd-icon">✉️</div>
+          <div class="cd-body">
+            <strong>Email</strong>
+            <p><a href="mailto:ayinihomeproducts@gmail.com">ayinihomeproducts@gmail.com</a></p>
+          </div>
+        </div>
+        <div class="cd">
+          <div class="cd-icon">📍</div>
+          <div class="cd-body">
+            <strong>Location</strong>
+            <p>PeriyanaickenPalayam,<br>Coimbatore, Tamil Nadu</p>
+          </div>
+        </div>
+        <div class="cd">
+          <div class="cd-icon">🕐</div>
+          <div class="cd-body">
+            <strong>Working Hours</strong>
+            <p>Monday – Saturday: 8 AM – 8 PM<br>Sunday: 9 AM – 2 PM</p>
+          </div>
+        </div>
+        <a href="https://wa.me/917397130039?text=Hi%20Ayini!%20I%20have%20a%20question." target="_blank" class="btn btn-amber" style="margin-top:8px;display:inline-flex;gap:8px;">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+          Chat on WhatsApp
+        </a>
+        <div class="map-embed">
+          <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3914.8793097422455!2d76.94669587538697!3d11.159231057768505!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x3ba8f100431f1507%3A0x3961aeb4ac14f207!2sAyini%20Home%20Products!5e0!3m2!1sen!2sin!4v1714737564021!5m2!1sen!2sin"
+            width="100%" height="190" style="border:0;" allowfullscreen loading="lazy" title="Ayini location"></iframe>
+        </div>
+      </div>
+
+      <!-- Right: Form -->
+      <div class="form-card">
+        <h2>Send a Message</h2>
+        <p class="sub">Fill in the form below and we'll get back to you within 24 hours.</p>
+
+        <!-- Quick channels -->
+        <div class="quick-channels">
+          <a href="https://wa.me/917397130039" target="_blank" class="qc-btn wa">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+            WhatsApp
+          </a>
+          <a href="tel:+917397130039" class="qc-btn ph">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/></svg>
+            Call Now
+          </a>
+          <a href="https://www.instagram.com/ayini_home_products/" target="_blank" class="qc-btn ig">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg>
+            Instagram
+          </a>
+          <a href="mailto:ayinihomeproducts@gmail.com" class="qc-btn em">
+            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+            Email Us
+          </a>
+        </div>
+
+        <div class="divider-text">or send us a message</div>
+
+        <div class="alert" id="alertBox"></div>
+
+        <form id="contactForm" novalidate>
+          <div class="two-col">
+            <div class="fg">
+              <label for="cname">Your Name *</label>
+              <input type="text" id="cname" placeholder="Full name" required>
+            </div>
+            <div class="fg">
+              <label for="cphone">Phone Number</label>
+              <input type="tel" id="cphone" placeholder="Mobile number">
+            </div>
+          </div>
+          <div class="fg">
+            <label for="cemail">Email Address *</label>
+            <input type="email" id="cemail" placeholder="you@example.com" required>
+          </div>
+          <div class="fg">
+            <label for="csubject">Subject</label>
+            <select id="csubject">
+              <option value="Product Enquiry">Product Enquiry</option>
+              <option value="Order Issue">Order Issue</option>
+              <option value="Bulk Order">Bulk Order</option>
+              <option value="Feedback">Feedback</option>
+              <option value="Other">Other</option>
+            </select>
+          </div>
+          <div class="fg">
+            <label for="cmessage">Message *</label>
+            <textarea id="cmessage" placeholder="Tell us how we can help you…" required></textarea>
+          </div>
+          <button type="submit" class="send-btn" id="sendBtn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+            Send Message
+          </button>
+        </form>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<div class="footer-strip">
+  <div class="footer-strip-inner">
+    <div class="fs-item"><span class="fs-icon">🔒</span><div><strong>Secure Payment</strong><span>100% secure transactions</span></div></div>
+    <div class="fs-item"><span class="fs-icon">🚴</span><div><strong>Fast Shipping</strong><span>Quick and safe delivery</span></div></div>
+    <div class="fs-item"><span class="fs-icon">↩️</span><div><strong>Easy Returns</strong><span>Hassle-free returns</span></div></div>
+    <div class="fs-item"><span class="fs-icon">💬</span><div><strong>Support 24/7</strong><span>We're here to help</span></div></div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo">
+          <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini">
+          <span>Ayini Home Products</span>
+        </div>
+        <p>Traditional homemade products from Coimbatore — masalas, millets, herbal soaps and cold-press oils.</p>
+        <div class="social-row">
+          <a href="https://www.instagram.com/ayini_home_products/" target="_blank" class="social-icon ig" aria-label="Instagram"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zm0-2.163c-3.259 0-3.667.014-4.947.072-4.358.2-6.78 2.618-6.98 6.98-.059 1.281-.073 1.689-.073 4.948 0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98 1.281.058 1.689.072 4.948.072 3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98-1.281-.059-1.69-.073-4.949-.073zm0 5.838c-3.403 0-6.162 2.759-6.162 6.162s2.759 6.163 6.162 6.163 6.162-2.759 6.162-6.163c0-3.403-2.759-6.162-6.162-6.162zm0 10.162c-2.209 0-4-1.79-4-4 0-2.209 1.791-4 4-4s4 1.791 4 4c0 2.21-1.791 4-4 4zm6.406-11.845c-.796 0-1.441.645-1.441 1.44s.645 1.44 1.441 1.44c.795 0 1.439-.645 1.439-1.44s-.644-1.44-1.439-1.44z"/></svg></a>
+          <a href="https://www.facebook.com/profile.php?id=61573521272015" target="_blank" class="social-icon fb" aria-label="Facebook"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M24 12.073c0-6.627-5.373-12-12-12s-12 5.373-12 12c0 5.99 4.388 10.954 10.125 11.854v-8.385H7.078v-3.47h3.047V9.43c0-3.007 1.792-4.669 4.533-4.669 1.312 0 2.686.235 2.686.235v2.953H15.83c-1.491 0-1.956.925-1.956 1.874v2.25h3.328l-.532 3.47h-2.796v8.385C19.612 23.027 24 18.062 24 12.073z"/></svg></a>
+          <a href="https://wa.me/917397130039" target="_blank" class="social-icon wa" aria-label="WhatsApp"><svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+        </div>
+      </div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="masala.html">Masalas & Spices</a></li><li><a href="millets.html">Rice, Millets & Pulses</a></li><li><a href="soap.html">Soap & Herbal Care</a></li><li><a href="oil.html">Cold Press Oils</a></li><li><a href="flour.html">Flour Items</a></li><li><a href="noodles.html">Noodles & Semiya</a></li></ul></div>
+      <div class="footer-col"><h4>Info</h4><ul><li><a href="about.html">About Us</a></li><li><a href="contact.html">Contact</a></li><li><a href="login.html">Login</a></li><li><a href="signup.html">Sign Up</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+917397130039">📞 +91 73971 30039</a></li><li><a href="mailto:ayinihomeproducts@gmail.com">✉️ Email Us</a></li><li><a href="https://wa.me/917397130039">💬 WhatsApp</a></li></ul><p style="margin-top:14px;font-size:.78rem;color:#6b7280;">PeriyanaickenPalayam,<br>Coimbatore, Tamil Nadu</p></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Ayini Home Products. All rights reserved.</p><p>Made with ❤️ in Coimbatore</p></div>
+  </div>
+</footer>
+
+<a href="https://wa.me/917397130039?text=Hi%20Ayini!%20I%20have%20a%20question." target="_blank" class="wa-float" aria-label="WhatsApp">
+  <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+  Order on WhatsApp
+</a>
+
+<script src="api.js"></script>
+<script>
+function showAlert(msg, type) {
+  const box = document.getElementById('alertBox');
+  box.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  box.className = 'alert ' + type;
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+document.getElementById('contactForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const name    = document.getElementById('cname').value.trim();
+  const email   = document.getElementById('cemail').value.trim();
+  const phone   = document.getElementById('cphone').value.trim();
+  const subject = document.getElementById('csubject').value;
+  const message = document.getElementById('cmessage').value.trim();
+  let ok = true;
+  document.querySelectorAll('.fg input,.fg textarea').forEach(el => el.classList.remove('err'));
+  if (!name)    { document.getElementById('cname').classList.add('err');    ok = false; }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { document.getElementById('cemail').classList.add('err'); ok = false; }
+  if (!message) { document.getElementById('cmessage').classList.add('err'); ok = false; }
+  if (!ok) { showAlert('Please fill in all required fields.', 'error'); return; }
+  const btn = document.getElementById('sendBtn');
+  btn.innerHTML = '⏳ Sending…'; btn.disabled = true;
+  try {
+    await ContactAPI.send(name, email, phone, subject, message);
+    showAlert('Message sent! We\'ll reply within 24 hours.', 'success');
+    document.getElementById('contactForm').reset();
+  } catch(e) {
+    showAlert(e.message || 'Could not send message. Please try WhatsApp instead.', 'error');
+  }
+  btn.innerHTML = '<svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/></svg> Send Message';
+  btn.disabled = false;
+});
+</script>
+</body>
+</html>

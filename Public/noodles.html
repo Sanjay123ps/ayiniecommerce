@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Noodles & Semiya – Ayini Home Products</title>
+  <meta name="description" content="Hand-ground aromatic spice blends for authentic South Indian cooking.">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="site-header">
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini Logo">
+      <div class="logo-text"><strong>Ayini Home <span style="color:var(--amber)">Products</span></strong><span>From Our Kitchen to Yours</span></div>
+    </a>
+    <form class="search-form" onsubmit="handleSearch(event)">
+      <input type="search" id="searchInput" placeholder="Search noodles & semiya…" aria-label="Search">
+      <button type="submit">Search</button>
+    </form>
+    <nav class="header-actions">
+      <a href="login.html" id="loginLink">Login / Register</a>
+      <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></a>
+    </nav>
+  </div>
+  <nav class="site-nav">
+    <div class="nav-inner">
+      <a href="index.html">Home</a>
+      <div class="nav-dropdown">
+        <a href="#" class="active">Categories ▾</a>
+        <ul class="nav-dropdown-menu">
+          <li><a href="masala.html">🌶️ Noodles & Semiya</a></li>
+          <li><a href="millets.html">🌾 Rice, Millets & Pulses</a></li>
+          <li><a href="soap.html">🧼 Soap & Herbal Care</a></li>
+          <li><a href="oil.html">🫙 Cold Press Oils</a></li>
+          <li><a href="flour.html">🌾 Flour Items</a></li>
+          <li><a href="noodles.html">🍜 Noodles & Semiya</a></li>
+        </ul>
+      </div>
+      <a href="index.html#about">About Us</a>
+      <a href="contact.html">Contact</a>
+    </div>
+  </nav>
+</header>
+<div class="page-hero">
+  <div class="container">
+    <h1>🌶️ Noodles & Semiya</h1>
+    <p>Healthy millet noodles — nutritious alternative to maida</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>Noodles & Semiya</span></div>
+  </div>
+</div>
+<section class="section" style="background:var(--cream);">
+  <div class="container">
+    <div class="product-grid" id="productGrid">
+      <div class="empty-state" style="grid-column:1/-1"><div class="spinner"></div><p>Loading products…</p></div>
+    </div>
+  </div>
+</section>
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="footer-logo"><img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini"><span>Ayini Home Products</span></div>
+        <p>Traditional homemade products from Coimbatore.</p>
+      </div>
+      <div class="footer-col"><h4>Shop</h4><ul><li><a href="masala.html">Noodles & Semiya</a></li><li><a href="millets.html">Rice, Millets & Pulses</a></li><li><a href="soap.html">Soap & Herbal Care</a></li><li><a href="oil.html">Cold Press Oils</a></li><li><a href="flour.html">Flour Items</a></li><li><a href="noodles.html">Noodles & Semiya</a></li></ul></div>
+      <div class="footer-col"><h4>Account</h4><ul><li><a href="login.html">Login</a></li><li><a href="signup.html">Register</a></li><li><a href="cart.html">Cart</a></li></ul></div>
+      <div class="footer-col"><h4>Contact</h4><ul><li><a href="tel:+917397130039">📞 +91 73971 30039</a></li><li><a href="https://wa.me/917397130039">💬 WhatsApp</a></li><li><a href="contact.html">Contact Page</a></li></ul></div>
+    </div>
+    <div class="footer-bottom"><p>© 2025 Ayini Home Products. All rights reserved.</p></div>
+  </div>
+</footer>
+<script src="api.js"></script>
+<script src="products.js"></script>
+<script>
+  window.PAGE_PRODUCTS = PRODUCTS['noodles'];
+  document.addEventListener('DOMContentLoaded', function() {
+    const q = new URLSearchParams(window.location.search).get('search') || '';
+    if (q) document.getElementById('searchInput').value = q;
+    document.getElementById('productGrid').innerHTML = renderProducts(window.PAGE_PRODUCTS, q);
+    if (typeof updateCartBadge === 'function') updateCartBadge();
+  });
+  function handleSearch(e) {
+    e.preventDefault();
+    const q = document.getElementById('searchInput').value.trim();
+    document.getElementById('productGrid').innerHTML = renderProducts(window.PAGE_PRODUCTS, q);
+  }
+</script>
+</body>
+</html>

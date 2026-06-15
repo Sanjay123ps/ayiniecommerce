@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Reset Password – Ayini Home Products</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background:var(--gray-50); }
+    .auth-page { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 20px; }
+    .auth-logo { display:flex; align-items:center; gap:10px; margin-bottom:32px; text-decoration:none; }
+    .auth-logo img { width:48px; height:48px; border-radius:50%; border:2px solid rgba(200,136,42,.3); }
+    .auth-logo-name { font-family:var(--font-display); font-size:1.3rem; font-weight:700; color:var(--green); }
+    .auth-logo-name span { color:var(--amber); }
+    .auth-box { background:white; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); width:100%; max-width:420px; overflow:hidden; }
+    .auth-box-header { background:linear-gradient(135deg,var(--green),var(--green-light)); padding:32px 36px 28px; text-align:center; }
+    .auth-box-header .lock-icon { font-size:2.8rem; margin-bottom:10px; display:block; }
+    .auth-box-header h1 { color:white; font-size:1.4rem; margin-bottom:6px; }
+    .auth-box-header p  { color:rgba(255,255,255,.8); font-size:.86rem; line-height:1.6; }
+    .auth-box-body { padding:32px 36px 36px; }
+    .field { margin-bottom:20px; }
+    .field label { display:block; font-size:.85rem; font-weight:600; color:var(--gray-700,#374151); margin-bottom:7px; }
+    .field input { width:100%; padding:11px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font-body); font-size:.95rem; color:var(--text); background:white; transition:border-color var(--transition),box-shadow var(--transition); outline:none; }
+    .field input:focus { border-color:var(--green-light); box-shadow:0 0 0 3px rgba(46,107,69,.1); }
+    .field input.error { border-color:#ef4444; }
+    .submit-btn { width:100%; padding:13px; background:var(--green); color:white; border:none; border-radius:var(--radius); font-family:var(--font-body); font-size:1rem; font-weight:600; cursor:pointer; transition:background var(--transition),transform .1s; }
+    .submit-btn:hover { background:var(--green-mid); }
+    .submit-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    .back-link { display:block; text-align:center; margin-top:20px; font-size:.88rem; color:var(--green); font-weight:500; }
+    .back-link:hover { text-decoration:underline; }
+    .alert { padding:13px 16px; border-radius:var(--radius); font-size:.88rem; font-weight:500; margin-bottom:20px; display:none; }
+    .alert.success { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+    .alert.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+    .steps { display:flex; flex-direction:column; gap:10px; margin-bottom:24px; }
+    .step-item { display:flex; align-items:flex-start; gap:10px; font-size:.82rem; color:var(--gray-500); }
+    .step-num { width:20px; height:20px; background:var(--green); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.68rem; font-weight:700; flex-shrink:0; margin-top:1px; }
+    .success-state { text-align:center; padding:8px 0; }
+    .success-state .big-icon { font-size:3.5rem; margin-bottom:12px; display:block; }
+    .success-state h3 { color:var(--green); margin-bottom:8px; font-size:1.1rem; }
+    .success-state p { color:var(--gray-500); font-size:.86rem; line-height:1.7; margin-bottom:20px; }
+  </style>
+</head>
+<body>
+<main class="auth-page">
+  <a href="index.html" class="auth-logo">
+    <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini" onerror="this.style.cssText='width:48px;height:48px;border-radius:50%;background:var(--green);'">
+    <span class="auth-logo-name">Ayini <span>Home</span> 🌿</span>
+  </a>
+
+  <div class="auth-box">
+    <div class="auth-box-header">
+      <span class="lock-icon">🔐</span>
+      <h1>Forgot Password?</h1>
+      <p>No worries — we'll send a reset link to your email.</p>
+    </div>
+    <div class="auth-box-body">
+
+      <!-- Form state -->
+      <div id="formState">
+        <div class="steps">
+          <div class="step-item"><div class="step-num">1</div><span>Enter your registered email address below</span></div>
+          <div class="step-item"><div class="step-num">2</div><span>Check your inbox for the reset link</span></div>
+          <div class="step-item"><div class="step-num">3</div><span>Click the link and set a new password</span></div>
+        </div>
+        <div class="alert" id="alertBox"></div>
+        <form id="forgotForm" novalidate>
+          <div class="field">
+            <label for="email">Email Address</label>
+            <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+          </div>
+          <button type="submit" class="submit-btn" id="sendBtn">Send Reset Link</button>
+        </form>
+      </div>
+
+      <!-- Success state -->
+      <div id="successState" style="display:none;">
+        <div class="success-state">
+          <span class="big-icon">📬</span>
+          <h3>Reset Link Sent!</h3>
+          <p>We've sent a password reset link to <strong id="sentEmail"></strong>. Check your inbox (and spam folder just in case).</p>
+          <a href="login.html" class="btn btn-primary" style="display:inline-flex;margin-top:4px;">← Back to Login</a>
+        </div>
+      </div>
+
+      <a href="login.html" class="back-link" id="backLink">← Back to Login</a>
+    </div>
+  </div>
+</main>
+
+<script src="api.js"></script>
+<script>
+function showAlert(msg, type) {
+  const box = document.getElementById('alertBox');
+  box.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  box.className = 'alert ' + type;
+  box.style.display = 'block';
+}
+
+document.getElementById('forgotForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const email = document.getElementById('email').value.trim();
+  const btn   = document.getElementById('sendBtn');
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('email').classList.add('error');
+    showAlert('Please enter a valid email address.', 'error');
+    return;
+  }
+  document.getElementById('email').classList.remove('error');
+  btn.textContent = 'Sending…'; btn.disabled = true;
+  try {
+    await AuthAPI.forgot(email);
+    document.getElementById('sentEmail').textContent = email;
+    document.getElementById('formState').style.display   = 'none';
+    document.getElementById('successState').style.display = 'block';
+    document.getElementById('backLink').style.display    = 'none';
+  } catch(err) {
+    showAlert(err.message || 'Could not send reset link. Please try again.', 'error');
+    btn.textContent = 'Send Reset Link'; btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

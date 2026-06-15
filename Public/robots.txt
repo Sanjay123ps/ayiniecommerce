@@ -1,0 +1,10 @@
+User-agent: *
+Allow: /
+
+Disallow: /admin.html
+Disallow: /cart.html
+Disallow: /checkout.html
+Disallow: /orders.html
+Disallow: /profile.html
+
+Sitemap: https://sanjay123ps.github.io/ayini1/sitemap.xml

@@ -1,0 +1,434 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>My Profile – Ayini Home Products</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .profile-page { background:var(--gray-50); min-height:80vh; padding:36px 0 64px; }
+    .profile-grid { display:grid; grid-template-columns:240px 1fr; gap:24px; align-items:start; }
+    .sidebar { background:white; border-radius:var(--radius-lg); border:1px solid var(--gray-200); overflow:hidden; position:sticky; top:100px; }
+    .sidebar-user { background:linear-gradient(135deg,var(--green),var(--green-light)); padding:24px; text-align:center; }
+    .sidebar-avatar { width:64px; height:64px; border-radius:50%; background:rgba(255,255,255,.2); border:3px solid rgba(255,255,255,.4); display:flex; align-items:center; justify-content:center; font-size:1.6rem; font-weight:700; color:white; margin:0 auto 10px; font-family:var(--font-display); }
+    .sidebar-name  { color:white; font-weight:700; font-size:1rem; margin-bottom:3px; }
+    .sidebar-email { color:rgba(255,255,255,.7); font-size:.78rem; }
+    .sidebar-nav { padding:8px 0; }
+    .sidebar-link { display:flex; align-items:center; gap:10px; padding:12px 20px; font-size:.88rem; font-weight:500; color:var(--gray-600); transition:all var(--transition); text-decoration:none; border-left:3px solid transparent; }
+    .sidebar-link:hover { background:var(--gray-50); color:var(--green); }
+    .sidebar-link.active { color:var(--green); background:#f0fdf4; border-left-color:var(--green); font-weight:600; }
+    .sidebar-link .licon { font-size:1rem; width:20px; text-align:center; }
+    .sidebar-logout { display:flex; align-items:center; gap:10px; padding:12px 20px; font-size:.88rem; font-weight:500; color:#ef4444; cursor:pointer; border:none; background:none; width:100%; border-top:1px solid var(--gray-100); margin-top:4px; }
+    .sidebar-logout:hover { background:#fef2f2; }
+    .profile-card { background:white; border-radius:var(--radius-lg); border:1px solid var(--gray-200); overflow:hidden; margin-bottom:20px; }
+    .pc-head { padding:16px 24px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; justify-content:space-between; }
+    .pc-head h3 { font-size:.95rem; font-weight:700; color:var(--text); font-family:var(--font-body); display:flex; align-items:center; gap:8px; }
+    .edit-toggle { background:none; border:1.5px solid var(--green); color:var(--green); padding:6px 14px; border-radius:var(--radius); font-size:.8rem; font-weight:600; cursor:pointer; transition:all var(--transition); }
+    .edit-toggle:hover { background:var(--green); color:white; }
+    .pc-body { padding:24px; }
+    .info-row { display:grid; grid-template-columns:1fr 1fr; gap:14px; margin-bottom:14px; }
+    .info-field { }
+    .info-field label { display:block; font-size:.78rem; font-weight:600; color:var(--gray-400); text-transform:uppercase; letter-spacing:.06em; margin-bottom:6px; }
+    .info-field .val { font-size:.92rem; color:var(--text); font-weight:500; padding:10px 14px; background:var(--gray-50); border-radius:var(--radius); border:1.5px solid transparent; }
+    .info-field input,.info-field select { width:100%; padding:10px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font-body); font-size:.92rem; outline:none; transition:border-color var(--transition); background:white; display:none; }
+    .info-field input:focus,.info-field select:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(46,107,69,.08); }
+    .profile-card.editing .info-field .val { display:none; }
+    .profile-card.editing .info-field input,
+    .profile-card.editing .info-field select { display:block; }
+    .save-row { display:none; gap:10px; margin-top:18px; }
+    .profile-card.editing .save-row { display:flex; }
+    .pw-section { margin-top:4px; }
+    .pw-section h4 { font-size:.85rem; font-weight:700; color:var(--gray-600); margin-bottom:14px; padding-top:16px; border-top:1px solid var(--gray-100); }
+    .fg { margin-bottom:14px; }
+    .fg label { display:block; font-size:.82rem; font-weight:600; color:var(--gray-500); margin-bottom:6px; }
+    .fg .pw-wrap { position:relative; }
+    .fg .pw-wrap input { width:100%; padding:10px 44px 10px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font-body); font-size:.9rem; outline:none; transition:border-color var(--transition); }
+    .fg .pw-wrap input:focus { border-color:var(--green); }
+    .fg .pw-toggle { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--gray-400); display:flex; align-items:center; padding:0; }
+    .addr-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(260px,1fr)); gap:14px; }
+    .addr-item { border:1.5px solid var(--gray-200); border-radius:var(--radius-lg); padding:16px; position:relative; transition:border-color var(--transition); }
+    .addr-item.default { border-color:var(--green); background:#f0fdf4; }
+    .addr-item h4 { font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:5px; display:flex; align-items:center; gap:7px; flex-wrap:wrap; }
+    .addr-item p  { font-size:.82rem; color:var(--gray-500); line-height:1.6; }
+    .addr-item .addr-phone { font-size:.82rem; color:var(--green); font-weight:600; margin-top:5px; }
+    .addr-actions { display:flex; gap:7px; margin-top:12px; }
+    .addr-actions button { padding:5px 12px; border-radius:var(--radius); font-size:.76rem; font-weight:600; cursor:pointer; border:1.5px solid; transition:all var(--transition); }
+    .btn-set-default { background:white; color:var(--green); border-color:var(--green); }
+    .btn-set-default:hover { background:var(--green); color:white; }
+    .btn-del-addr { background:white; color:#ef4444; border-color:#ef4444; }
+    .btn-del-addr:hover { background:#fef2f2; }
+    .default-badge { background:var(--green); color:white; font-size:.65rem; padding:2px 7px; border-radius:20px; font-weight:700; }
+    .add-addr-form { border:2px dashed var(--gray-200); border-radius:var(--radius-lg); padding:20px; margin-top:14px; display:none; }
+    .add-addr-form.show { display:block; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .add-addr-toggle { display:inline-flex; align-items:center; gap:6px; color:var(--green); font-weight:600; font-size:.88rem; cursor:pointer; margin-top:14px; }
+    .add-addr-toggle:hover { text-decoration:underline; }
+    .alert { padding:12px 16px; border-radius:var(--radius); font-size:.86rem; font-weight:500; margin-bottom:16px; display:none; }
+    .alert.success { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+    .alert.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+    .danger-zone { border:1.5px solid #fee2e2; border-radius:var(--radius-lg); padding:20px 24px; display:flex; align-items:center; justify-content:space-between; gap:12px; flex-wrap:wrap; }
+    .danger-zone h4 { font-size:.9rem; font-weight:700; color:#991b1b; margin-bottom:3px; }
+    .danger-zone p  { font-size:.8rem; color:var(--gray-500); }
+    .btn-danger { background:#ef4444; color:white; border:none; padding:9px 18px; border-radius:var(--radius); font-size:.85rem; font-weight:600; cursor:pointer; }
+    .btn-danger:hover { background:#dc2626; }
+    @media(max-width:900px){ .profile-grid{grid-template-columns:1fr;} .sidebar{position:static;} }
+    @media(max-width:600px){ .info-row,.two-col{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini" onerror="this.style.cssText='width:44px;height:44px;border-radius:50%;background:var(--green);'">
+      <div class="logo-text">
+        <strong>Ayini <span style="color:var(--amber)">Home</span> 🌿</strong>
+        <span>Homemade · Natural · Coimbatore</span>
+      </div>
+    </a>
+    <nav class="header-actions">
+      <a href="profile.html" id="loginLink">My Account</a>
+      <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>👤 My Profile</h1>
+    <p>Manage your account details and saved addresses</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><span>My Profile</span></div>
+  </div>
+</div>
+
+<div class="profile-page">
+  <div class="container">
+    <div class="profile-grid">
+
+      <!-- Sidebar -->
+      <div class="sidebar">
+        <div class="sidebar-user">
+          <div class="sidebar-avatar" id="sidebarAvatar">?</div>
+          <div class="sidebar-name"  id="sidebarName">Loading…</div>
+          <div class="sidebar-email" id="sidebarEmail"></div>
+        </div>
+        <nav class="sidebar-nav">
+          <a href="profile.html" class="sidebar-link active"><span class="licon">👤</span> My Profile</a>
+          <a href="orders.html"  class="sidebar-link"><span class="licon">📦</span> My Orders</a>
+          <a href="cart.html"    class="sidebar-link"><span class="licon">🛒</span> My Cart</a>
+          <a href="index.html"   class="sidebar-link"><span class="licon">🏠</span> Continue Shopping</a>
+        </nav>
+        <button class="sidebar-logout" onclick="Auth.logout()">
+          <span class="licon">🚪</span> Logout
+        </button>
+      </div>
+
+      <!-- Main -->
+      <div>
+
+        <!-- Personal Info -->
+        <div class="profile-card" id="infoCard">
+          <div class="pc-head">
+            <h3>👤 Personal Information</h3>
+            <button class="edit-toggle" id="editToggle" onclick="toggleEdit()">✏️ Edit</button>
+          </div>
+          <div class="pc-body">
+            <div class="alert" id="infoAlert"></div>
+            <div class="info-row">
+              <div class="info-field">
+                <label>Full Name</label>
+                <div class="val" id="dispName">—</div>
+                <input type="text" id="editName" placeholder="Your full name">
+              </div>
+              <div class="info-field">
+                <label>Phone Number</label>
+                <div class="val" id="dispPhone">—</div>
+                <input type="tel" id="editPhone" placeholder="10-digit mobile" maxlength="10">
+              </div>
+            </div>
+            <div class="info-row">
+              <div class="info-field">
+                <label>Email Address</label>
+                <div class="val" id="dispEmail">—</div>
+                <input type="email" id="editEmail" placeholder="your@email.com">
+              </div>
+              <div class="info-field">
+                <label>Member Since</label>
+                <div class="val" id="dispJoined">—</div>
+                <input type="text" id="editJoined" disabled>
+              </div>
+            </div>
+            <div class="save-row">
+              <button class="btn btn-primary" onclick="saveProfile()">Save Changes</button>
+              <button class="btn btn-outline" onclick="cancelEdit()">Cancel</button>
+            </div>
+
+            <!-- Change Password -->
+            <div class="pw-section">
+              <h4>🔒 Change Password</h4>
+              <div class="alert" id="pwAlert"></div>
+              <div class="info-row">
+                <div class="fg">
+                  <label>Current Password</label>
+                  <div class="pw-wrap">
+                    <input type="password" id="curPw" placeholder="Current password">
+                    <button type="button" class="pw-toggle" onclick="togglePw('curPw',this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  </div>
+                </div>
+                <div class="fg">
+                  <label>New Password</label>
+                  <div class="pw-wrap">
+                    <input type="password" id="newPw" placeholder="Min 6 characters">
+                    <button type="button" class="pw-toggle" onclick="togglePw('newPw',this)"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg></button>
+                  </div>
+                </div>
+              </div>
+              <button class="btn btn-outline" style="font-size:.88rem;padding:9px 20px;" onclick="changePassword()">Update Password</button>
+            </div>
+          </div>
+        </div>
+
+        <!-- Saved Addresses -->
+        <div class="profile-card">
+          <div class="pc-head">
+            <h3>📍 Saved Addresses</h3>
+          </div>
+          <div class="pc-body">
+            <div class="alert" id="addrAlert"></div>
+            <div class="addr-grid" id="addrGrid">
+              <div class="spinner" style="margin:20px auto;"></div>
+            </div>
+            <span class="add-addr-toggle" id="addAddrToggle" onclick="toggleAddrForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H13V5h-2v6H5v2h6v6h2v-6h6v-2z"/></svg>
+              Add New Address
+            </span>
+            <div class="add-addr-form" id="addAddrForm">
+              <div class="two-col">
+                <div class="fg"><label>Full Name *</label><input type="text" id="nName" placeholder="Recipient name"></div>
+                <div class="fg"><label>Phone *</label><input type="tel" id="nPhone" placeholder="10-digit mobile" maxlength="10"></div>
+              </div>
+              <div class="fg"><label>Address Line 1 *</label><input type="text" id="nLine1" placeholder="House, Street, Area"></div>
+              <div class="fg"><label>Address Line 2 <span style="color:var(--gray-400)">(Optional)</span></label><input type="text" id="nLine2" placeholder="Landmark"></div>
+              <div class="two-col">
+                <div class="fg"><label>City *</label><input type="text" id="nCity" placeholder="City" value="Coimbatore"></div>
+                <div class="fg"><label>State *</label>
+                  <select id="nState">
+                    <option value="">Select State</option>
+                    <option value="Tamil Nadu" selected>Tamil Nadu</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="fg" style="max-width:160px;"><label>Pincode *</label><input type="text" id="nPincode" placeholder="6-digit" maxlength="6"></div>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer;margin-bottom:14px;">
+                <input type="checkbox" id="nDefault" style="accent-color:var(--green);width:16px;height:16px;"> Set as default address
+              </label>
+              <div style="display:flex;gap:10px;">
+                <button class="btn btn-primary" style="font-size:.88rem;padding:9px 20px;" onclick="saveAddress()">Save Address</button>
+                <button class="btn btn-outline"  style="font-size:.88rem;padding:9px 20px;" onclick="toggleAddrForm()">Cancel</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Danger Zone -->
+        <div class="profile-card">
+          <div class="pc-head"><h3 style="color:#991b1b;">⚠️ Danger Zone</h3></div>
+          <div class="pc-body">
+            <div class="danger-zone">
+              <div>
+                <h4>Delete Account</h4>
+                <p>Permanently delete your account and all order history. This cannot be undone.</p>
+              </div>
+              <button class="btn-danger" onclick="deleteAccount()">Delete Account</button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</div>
+
+<script src="api.js"></script>
+<script>
+let userData = null, addresses = [];
+
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.querySelector('svg').innerHTML = show
+    ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+}
+
+function showAlert(id, msg, type) {
+  const el = document.getElementById(id);
+  el.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  el.className = 'alert ' + type;
+  el.style.display = 'block';
+  setTimeout(() => { el.style.display = 'none'; }, 4000);
+}
+
+function toggleEdit() {
+  const card = document.getElementById('infoCard');
+  const btn  = document.getElementById('editToggle');
+  const editing = card.classList.toggle('editing');
+  btn.textContent = editing ? '✕ Cancel' : '✏️ Edit';
+  if (editing && userData) {
+    document.getElementById('editName').value  = userData.name  || '';
+    document.getElementById('editPhone').value = userData.phone || '';
+    document.getElementById('editEmail').value = userData.email || '';
+    document.getElementById('editJoined').value = document.getElementById('dispJoined').textContent;
+  }
+}
+
+function cancelEdit() {
+  document.getElementById('infoCard').classList.remove('editing');
+  document.getElementById('editToggle').textContent = '✏️ Edit';
+}
+
+async function saveProfile() {
+  const name  = document.getElementById('editName').value.trim();
+  const phone = document.getElementById('editPhone').value.trim();
+  const email = document.getElementById('editEmail').value.trim();
+  if (!name || !email) { showAlert('infoAlert','Name and email are required.','error'); return; }
+  try {
+    const updated = await apiFetch('/auth/profile', { method:'PUT', body:JSON.stringify({ name, phone, email }) });
+    userData = { ...userData, ...updated };
+    Auth.setSession(Auth.getToken(), userData);
+    populateProfile();
+    cancelEdit();
+    showAlert('infoAlert','Profile updated successfully!','success');
+  } catch(e) { showAlert('infoAlert', e.message, 'error'); }
+}
+
+async function changePassword() {
+  const cur = document.getElementById('curPw').value;
+  const nw  = document.getElementById('newPw').value;
+  if (!cur || !nw) { showAlert('pwAlert','Both fields are required.','error'); return; }
+  if (nw.length < 6) { showAlert('pwAlert','New password must be at least 6 characters.','error'); return; }
+  try {
+    await apiFetch('/auth/change-password', { method:'POST', body:JSON.stringify({ current_password:cur, new_password:nw }) });
+    document.getElementById('curPw').value = '';
+    document.getElementById('newPw').value = '';
+    showAlert('pwAlert','Password changed successfully!','success');
+  } catch(e) { showAlert('pwAlert', e.message, 'error'); }
+}
+
+function populateProfile() {
+  if (!userData) return;
+  const name   = userData.name  || '—';
+  const email  = userData.email || '—';
+  const phone  = userData.phone || 'Not added';
+  const joined = userData.created_at ? new Date(userData.created_at).toLocaleDateString('en-IN',{day:'numeric',month:'long',year:'numeric'}) : '—';
+  document.getElementById('dispName').textContent   = name;
+  document.getElementById('dispPhone').textContent  = phone;
+  document.getElementById('dispEmail').textContent  = email;
+  document.getElementById('dispJoined').textContent = joined;
+  document.getElementById('sidebarName').textContent  = name;
+  document.getElementById('sidebarEmail').textContent = email;
+  document.getElementById('sidebarAvatar').textContent = name[0].toUpperCase();
+}
+
+function renderAddresses() {
+  const grid = document.getElementById('addrGrid');
+  if (!addresses.length) { grid.innerHTML = '<p style="color:var(--gray-400);font-size:.88rem;">No saved addresses yet.</p>'; return; }
+  grid.innerHTML = addresses.map(a => `
+    <div class="addr-item ${a.is_default ? 'default' : ''}">
+      <h4>${a.name} ${a.is_default ? '<span class="default-badge">Default</span>' : ''}</h4>
+      <p>${a.line1}${a.line2 ? ', ' + a.line2 : ''}, ${a.city}, ${a.state} – ${a.pincode}</p>
+      <p class="addr-phone">📞 ${a.phone}</p>
+      <div class="addr-actions">
+        ${!a.is_default ? `<button class="btn-set-default" onclick="setDefault(${a.id})">Set Default</button>` : ''}
+        <button class="btn-del-addr" onclick="deleteAddress(${a.id})">🗑 Delete</button>
+      </div>
+    </div>`).join('');
+}
+
+function toggleAddrForm() {
+  const form   = document.getElementById('addAddrForm');
+  const toggle = document.getElementById('addAddrToggle');
+  const open   = form.classList.contains('show');
+  form.classList.toggle('show', !open);
+  toggle.innerHTML = open
+    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H13V5h-2v6H5v2h6v6h2v-6h6v-2z"/></svg> Add New Address'
+    : '− Hide Form';
+}
+
+async function saveAddress() {
+  const name    = document.getElementById('nName').value.trim();
+  const phone   = document.getElementById('nPhone').value.trim();
+  const line1   = document.getElementById('nLine1').value.trim();
+  const line2   = document.getElementById('nLine2').value.trim();
+  const city    = document.getElementById('nCity').value.trim();
+  const state   = document.getElementById('nState').value;
+  const pincode = document.getElementById('nPincode').value.trim();
+  const def     = document.getElementById('nDefault').checked;
+  if (!name||!phone||!line1||!city||!state||!pincode) { showAlert('addrAlert','Please fill all required fields.','error'); return; }
+  if (!/^[6-9]\d{9}$/.test(phone)) { showAlert('addrAlert','Enter a valid 10-digit phone number.','error'); return; }
+  if (!/^\d{6}$/.test(pincode))    { showAlert('addrAlert','Enter a valid 6-digit pincode.','error'); return; }
+  try {
+    const addr = await AddressAPI.add({ name, phone, line1, line2, city, state, pincode, is_default:def });
+    addresses = def ? addresses.map(a => ({...a, is_default:false})) : addresses;
+    addresses.push(addr);
+    renderAddresses();
+    toggleAddrForm();
+    document.getElementById('addAddrForm').querySelectorAll('input').forEach(i => { if(i.type!=='checkbox') i.value=''; });
+    document.getElementById('nDefault').checked = false;
+    showAlert('addrAlert','Address saved successfully!','success');
+  } catch(e) { showAlert('addrAlert', e.message, 'error'); }
+}
+
+async function setDefault(id) {
+  try {
+    await apiFetch('/addresses/' + id + '/default', { method:'PUT' });
+    addresses = addresses.map(a => ({ ...a, is_default: a.id === id }));
+    renderAddresses();
+    showAlert('addrAlert','Default address updated.','success');
+  } catch(e) { showAlert('addrAlert', e.message, 'error'); }
+}
+
+async function deleteAddress(id) {
+  if (!confirm('Delete this address?')) return;
+  try {
+    await apiFetch('/addresses/' + id, { method:'DELETE' });
+    addresses = addresses.filter(a => a.id !== id);
+    renderAddresses();
+    showAlert('addrAlert','Address removed.','success');
+  } catch(e) { showAlert('addrAlert', e.message, 'error'); }
+}
+
+async function deleteAccount() {
+  if (!confirm('Are you absolutely sure? This will permanently delete your account and all your data.')) return;
+  if (!confirm('This cannot be undone. Confirm once more to proceed.')) return;
+  try {
+    await apiFetch('/auth/account', { method:'DELETE' });
+    Auth.logout();
+  } catch(e) { showToast(e.message, true); }
+}
+
+async function init() {
+  if (!Auth.isLoggedIn()) { window.location.href = 'login.html'; return; }
+  userData = Auth.getUser();
+  populateProfile();
+  try {
+    const [me, addrs] = await Promise.all([AuthAPI.me(), AddressAPI.getAll()]);
+    userData  = me;
+    addresses = addrs;
+    Auth.setSession(Auth.getToken(), me);
+    populateProfile();
+    renderAddresses();
+  } catch(e) { showToast(e.message, true); }
+}
+
+document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
+</html>

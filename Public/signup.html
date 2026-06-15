@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Sign Up – Ayini Home Products</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background:var(--gray-50); }
+    .auth-page { min-height:100vh; display:flex; flex-direction:column; align-items:center; justify-content:center; padding:40px 20px; }
+    .auth-logo { display:flex; align-items:center; gap:10px; margin-bottom:32px; text-decoration:none; }
+    .auth-logo img { width:48px; height:48px; border-radius:50%; border:2px solid rgba(200,136,42,.3); }
+    .auth-logo-name { font-family:var(--font-display); font-size:1.3rem; font-weight:700; color:var(--green); }
+    .auth-logo-name span { color:var(--amber); }
+    .auth-box { background:white; border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); width:100%; max-width:480px; overflow:hidden; }
+    .auth-box-header { background:linear-gradient(135deg,var(--green),var(--green-light)); padding:32px 36px 28px; text-align:center; }
+    .auth-box-header h1 { color:white; font-size:1.5rem; margin-bottom:6px; }
+    .auth-box-header p  { color:rgba(255,255,255,.8); font-size:.88rem; }
+    .auth-box-body { padding:32px 36px 36px; }
+    .field { margin-bottom:18px; }
+    .field label { display:block; font-size:.85rem; font-weight:600; color:var(--gray-700,#374151); margin-bottom:7px; }
+    .field input { width:100%; padding:11px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font-body); font-size:.95rem; color:var(--text); background:white; transition:border-color var(--transition),box-shadow var(--transition); outline:none; }
+    .field input:focus { border-color:var(--green-light); box-shadow:0 0 0 3px rgba(46,107,69,.1); }
+    .field input.error { border-color:#ef4444; }
+    .field-err { font-size:.78rem; color:#ef4444; margin-top:5px; display:none; }
+    .field-hint { font-size:.78rem; color:var(--gray-400); margin-top:5px; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:14px; }
+    .pw-wrap { position:relative; }
+    .pw-wrap input { padding-right:44px; }
+    .pw-toggle { position:absolute; right:12px; top:50%; transform:translateY(-50%); background:none; border:none; cursor:pointer; color:var(--gray-400); padding:4px; display:flex; align-items:center; }
+    .pw-toggle:hover { color:var(--gray-600); }
+    .pw-strength { height:4px; border-radius:2px; margin-top:6px; background:var(--gray-200); overflow:hidden; }
+    .pw-strength-bar { height:100%; width:0; border-radius:2px; transition:width .3s,background .3s; }
+    .pw-strength-label { font-size:.72rem; color:var(--gray-400); margin-top:4px; }
+    .submit-btn { width:100%; padding:13px; background:var(--green); color:white; border:none; border-radius:var(--radius); font-family:var(--font-body); font-size:1rem; font-weight:600; cursor:pointer; transition:background var(--transition),transform .1s; margin-top:8px; }
+    .submit-btn:hover { background:var(--green-mid); }
+    .submit-btn:active { transform:scale(.98); }
+    .submit-btn:disabled { opacity:.6; cursor:not-allowed; transform:none; }
+    .terms { font-size:.78rem; color:var(--gray-500); text-align:center; margin-top:14px; line-height:1.6; }
+    .terms a { color:var(--green); }
+    .auth-switch { text-align:center; margin-top:20px; font-size:.88rem; color:var(--gray-500); }
+    .auth-switch a { color:var(--green); font-weight:600; }
+    .auth-switch a:hover { text-decoration:underline; }
+    .alert-box { padding:12px 16px; border-radius:var(--radius); font-size:.88rem; font-weight:500; margin-bottom:20px; display:none; }
+    .alert-box.success { background:#f0fdf4; color:#166534; border:1px solid #bbf7d0; }
+    .alert-box.error   { background:#fef2f2; color:#991b1b; border:1px solid #fecaca; }
+    @media(max-width:480px){ .two-col{grid-template-columns:1fr;} .auth-box-body{padding:24px 20px 28px;} }
+  </style>
+</head>
+<body>
+<main class="auth-page">
+  <a href="index.html" class="auth-logo">
+    <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini" onerror="this.style.cssText='width:48px;height:48px;border-radius:50%;background:var(--green);'">
+    <span class="auth-logo-name">Ayini <span>Home</span> 🌿</span>
+  </a>
+
+  <div class="auth-box">
+    <div class="auth-box-header">
+      <h1>Create Account</h1>
+      <p>Join Ayini and enjoy homemade goodness</p>
+    </div>
+    <div class="auth-box-body">
+      <div class="alert-box" id="alertBox"></div>
+
+      <form id="signupForm" novalidate>
+        <div class="two-col">
+          <div class="field">
+            <label for="firstName">First Name</label>
+            <input type="text" id="firstName" placeholder="First name" autocomplete="given-name" required>
+            <p class="field-err" id="firstNameErr">Required.</p>
+          </div>
+          <div class="field">
+            <label for="lastName">Last Name</label>
+            <input type="text" id="lastName" placeholder="Last name" autocomplete="family-name">
+          </div>
+        </div>
+        <div class="field">
+          <label for="email">Email Address</label>
+          <input type="email" id="email" placeholder="you@example.com" autocomplete="email" required>
+          <p class="field-err" id="emailErr">Enter a valid email address.</p>
+        </div>
+        <div class="field">
+          <label for="phone">Phone Number</label>
+          <input type="tel" id="phone" placeholder="10-digit mobile number" autocomplete="tel" maxlength="10">
+          <p class="field-err" id="phoneErr">Enter a valid 10-digit number.</p>
+        </div>
+        <div class="field">
+          <label for="password">Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="password" placeholder="Min 6 characters" autocomplete="new-password" required oninput="checkStrength(this.value)">
+            <button type="button" class="pw-toggle" onclick="togglePw('password',this)" aria-label="Show password">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <div class="pw-strength"><div class="pw-strength-bar" id="pwBar"></div></div>
+          <p class="pw-strength-label" id="pwLabel"></p>
+          <p class="field-err" id="passErr">Password must be at least 6 characters.</p>
+        </div>
+        <div class="field">
+          <label for="confirm">Confirm Password</label>
+          <div class="pw-wrap">
+            <input type="password" id="confirm" placeholder="Repeat password" autocomplete="new-password" required>
+            <button type="button" class="pw-toggle" onclick="togglePw('confirm',this)" aria-label="Show password">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/></svg>
+            </button>
+          </div>
+          <p class="field-err" id="confirmErr">Passwords do not match.</p>
+        </div>
+        <button type="submit" class="submit-btn" id="signupBtn">Create Account</button>
+        <p class="terms">By creating an account you agree to our <a href="#">Terms of Service</a> and <a href="#">Privacy Policy</a>.</p>
+      </form>
+
+      <p class="auth-switch">Already have an account? <a href="login.html">Sign in</a></p>
+    </div>
+  </div>
+</main>
+
+<script src="api.js"></script>
+<script>
+function togglePw(id, btn) {
+  const inp = document.getElementById(id);
+  const show = inp.type === 'password';
+  inp.type = show ? 'text' : 'password';
+  btn.querySelector('svg').innerHTML = show
+    ? '<path d="M17.94 17.94A10.07 10.07 0 0 1 12 20c-7 0-11-8-11-8a18.45 18.45 0 0 1 5.06-5.94"/><path d="M9.9 4.24A9.12 9.12 0 0 1 12 4c7 0 11 8 11 8a18.5 18.5 0 0 1-2.16 3.19"/><line x1="1" y1="1" x2="23" y2="23"/>'
+    : '<path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>';
+}
+
+function checkStrength(val) {
+  const bar = document.getElementById('pwBar');
+  const lbl = document.getElementById('pwLabel');
+  let score = 0;
+  if (val.length >= 6)  score++;
+  if (val.length >= 10) score++;
+  if (/[A-Z]/.test(val)) score++;
+  if (/[0-9]/.test(val)) score++;
+  if (/[^A-Za-z0-9]/.test(val)) score++;
+  const map = [
+    {w:'0%',   bg:'',           t:''},
+    {w:'25%',  bg:'#ef4444',   t:'Weak'},
+    {w:'50%',  bg:'#f59e0b',   t:'Fair'},
+    {w:'75%',  bg:'#3b82f6',   t:'Good'},
+    {w:'100%', bg:'#22c55e',   t:'Strong'},
+  ];
+  const s = Math.min(score, 4);
+  bar.style.width = map[s].w;
+  bar.style.background = map[s].bg;
+  lbl.textContent = map[s].t;
+  lbl.style.color = map[s].bg;
+}
+
+function showAlert(msg, type) {
+  const box = document.getElementById('alertBox');
+  box.textContent = (type === 'success' ? '✅ ' : '❌ ') + msg;
+  box.className = 'alert-box ' + type;
+  box.style.display = 'block';
+  box.scrollIntoView({ behavior:'smooth', block:'nearest' });
+}
+
+document.getElementById('signupForm').addEventListener('submit', async function(e) {
+  e.preventDefault();
+  const firstName = document.getElementById('firstName').value.trim();
+  const lastName  = document.getElementById('lastName').value.trim();
+  const email     = document.getElementById('email').value.trim();
+  const phone     = document.getElementById('phone').value.trim();
+  const pass      = document.getElementById('password').value;
+  const conf      = document.getElementById('confirm').value;
+  let ok = true;
+  document.querySelectorAll('.field-err').forEach(el => el.style.display = 'none');
+  document.querySelectorAll('.field input').forEach(el => el.classList.remove('error'));
+  if (!firstName) {
+    document.getElementById('firstNameErr').style.display = 'block';
+    document.getElementById('firstName').classList.add('error'); ok = false;
+  }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    document.getElementById('emailErr').style.display = 'block';
+    document.getElementById('email').classList.add('error'); ok = false;
+  }
+  if (phone && !/^\d{10}$/.test(phone)) {
+    document.getElementById('phoneErr').style.display = 'block';
+    document.getElementById('phone').classList.add('error'); ok = false;
+  }
+  if (pass.length < 6) {
+    document.getElementById('passErr').style.display = 'block';
+    document.getElementById('password').classList.add('error'); ok = false;
+  }
+  if (pass !== conf) {
+    document.getElementById('confirmErr').style.display = 'block';
+    document.getElementById('confirm').classList.add('error'); ok = false;
+  }
+  if (!ok) return;
+  const btn = document.getElementById('signupBtn');
+  btn.textContent = 'Creating account…'; btn.disabled = true;
+  try {
+    const fullName = lastName ? `${firstName} ${lastName}` : firstName;
+    const data = await AuthAPI.register(fullName, email, pass, phone);
+    Auth.setSession(data.token, data.user);
+    showAlert('Account created successfully! Redirecting…', 'success');
+    setTimeout(() => window.location.href = 'index.html', 1000);
+  } catch(err) {
+    showAlert(err.message || 'Registration failed. Please try again.', 'error');
+    btn.textContent = 'Create Account'; btn.disabled = false;
+  }
+});
+</script>
+</body>
+</html>

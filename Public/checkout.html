@@ -1,0 +1,415 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Checkout – Ayini Home Products</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    .checkout-page { background:var(--gray-50); padding:36px 0 72px; min-height:80vh; }
+    .checkout-grid { display:grid; grid-template-columns:1fr 360px; gap:24px; align-items:start; }
+    .co-card { background:white; border-radius:var(--radius-lg); border:1px solid var(--gray-200); box-shadow:var(--shadow-sm); margin-bottom:20px; overflow:hidden; }
+    .co-card-head { padding:16px 24px; border-bottom:1px solid var(--gray-100); display:flex; align-items:center; gap:10px; }
+    .co-card-head .step { width:26px; height:26px; background:var(--green); color:white; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.78rem; font-weight:700; flex-shrink:0; }
+    .co-card-head h3 { font-size:.95rem; font-weight:700; color:var(--text); font-family:var(--font-body); }
+    .co-card-body { padding:20px 24px; }
+    .addr-card { border:2px solid var(--gray-200); border-radius:var(--radius); padding:14px 16px; cursor:pointer; transition:all var(--transition); margin-bottom:10px; display:grid; grid-template-columns:1fr auto; gap:8px; align-items:start; }
+    .addr-card:hover { border-color:var(--green-light); background:var(--gray-50); }
+    .addr-card.selected { border-color:var(--green); background:#f0fdf4; }
+    .addr-card h4 { font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:3px; display:flex; align-items:center; gap:7px; }
+    .addr-card p { font-size:.82rem; color:var(--gray-500); line-height:1.5; }
+    .addr-card .addr-phone { font-size:.82rem; color:var(--green); font-weight:600; margin-top:4px; }
+    .addr-radio { accent-color:var(--green); width:18px; height:18px; margin-top:2px; }
+    .default-badge { background:var(--green); color:white; font-size:.65rem; padding:2px 7px; border-radius:20px; font-weight:700; letter-spacing:.03em; }
+    .add-addr-toggle { display:inline-flex; align-items:center; gap:6px; color:var(--green); font-weight:600; font-size:.88rem; cursor:pointer; padding:8px 0; margin-top:4px; }
+    .add-addr-toggle:hover { text-decoration:underline; }
+    .addr-form { display:none; border-top:1px solid var(--gray-100); padding-top:18px; margin-top:6px; }
+    .addr-form.show { display:block; }
+    .fg { margin-bottom:14px; }
+    .fg label { display:block; font-size:.82rem; font-weight:600; color:var(--gray-600); margin-bottom:6px; }
+    .fg input,.fg select,.fg textarea { width:100%; padding:10px 13px; border:1.5px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font-body); font-size:.9rem; outline:none; transition:border-color var(--transition); background:white; }
+    .fg input:focus,.fg select:focus,.fg textarea:focus { border-color:var(--green); box-shadow:0 0 0 3px rgba(46,107,69,.08); }
+    .fg input.err,.fg select.err { border-color:#ef4444; }
+    .two-col { display:grid; grid-template-columns:1fr 1fr; gap:12px; }
+    .pay-opt { border:2px solid var(--gray-200); border-radius:var(--radius); padding:14px 16px; cursor:pointer; transition:all var(--transition); margin-bottom:10px; display:flex; align-items:center; gap:14px; }
+    .pay-opt:hover { border-color:var(--green-light); background:var(--gray-50); }
+    .pay-opt.selected { border-color:var(--green); background:#f0fdf4; }
+    .pay-opt .pay-icon-box { font-size:1.8rem; flex-shrink:0; }
+    .pay-opt .pay-info h4 { font-size:.9rem; font-weight:600; color:var(--text); margin-bottom:2px; }
+    .pay-opt .pay-info p  { font-size:.78rem; color:var(--gray-500); }
+    .pay-radio { accent-color:var(--green); width:18px; height:18px; flex-shrink:0; }
+    .razorpay-note { background:#fffbeb; border:1px solid #fde68a; border-radius:var(--radius); padding:10px 14px; font-size:.8rem; color:#92400e; margin-top:8px; display:none; }
+    .notes-area { width:100%; padding:11px 14px; border:1.5px solid var(--gray-200); border-radius:var(--radius); font-family:var(--font-body); font-size:.9rem; resize:vertical; outline:none; transition:border-color var(--transition); }
+    .notes-area:focus { border-color:var(--green); }
+    /* Summary sidebar */
+    .sum-sidebar { background:white; border-radius:var(--radius-lg); border:1px solid var(--gray-200); box-shadow:var(--shadow-sm); padding:24px; position:sticky; top:100px; }
+    .sum-sidebar h3 { font-size:1rem; font-weight:700; font-family:var(--font-body); padding-bottom:14px; border-bottom:1px solid var(--gray-100); margin-bottom:16px; }
+    .order-item-row { display:flex; justify-content:space-between; align-items:flex-start; margin-bottom:11px; font-size:.85rem; gap:8px; }
+    .order-item-row .oi-name { color:var(--gray-600); flex:1; line-height:1.4; }
+    .order-item-row .oi-price { font-weight:600; color:var(--text); white-space:nowrap; }
+    .sum-divider { height:1px; background:var(--gray-100); margin:14px 0; }
+    .sum-row { display:flex; justify-content:space-between; margin-bottom:10px; font-size:.88rem; color:var(--gray-500); }
+    .sum-row.total { font-weight:800; font-size:1.1rem; color:var(--text); padding-top:12px; border-top:2px solid var(--gray-200); margin-top:4px; }
+    .sum-row.disc { color:#16a34a; font-weight:600; }
+    .place-btn { width:100%; padding:15px; background:var(--green); color:white; border:none; border-radius:var(--radius); font-family:var(--font-body); font-size:1rem; font-weight:700; cursor:pointer; margin-top:14px; display:flex; align-items:center; justify-content:center; gap:8px; transition:background var(--transition),transform .1s,box-shadow var(--transition); }
+    .place-btn:hover:not(:disabled) { background:var(--green-mid); transform:translateY(-1px); box-shadow:0 6px 20px rgba(26,58,42,.25); }
+    .place-btn:disabled { opacity:.5; cursor:not-allowed; transform:none; }
+    .secure-note { display:flex; align-items:center; gap:6px; justify-content:center; font-size:.76rem; color:var(--gray-400); margin-top:10px; }
+    /* Success overlay */
+    .success-overlay { position:fixed; inset:0; background:rgba(0,0,0,.55); z-index:900; display:none; align-items:center; justify-content:center; }
+    .success-overlay.show { display:flex; }
+    .success-box { background:white; border-radius:var(--radius-lg); padding:48px 40px; text-align:center; max-width:440px; width:92%; animation:popIn .35s ease; }
+    @keyframes popIn { from{transform:scale(.85);opacity:0} to{transform:scale(1);opacity:1} }
+    .success-icon { font-size:4rem; margin-bottom:16px; }
+    .success-box h2 { color:var(--green); margin-bottom:10px; }
+    .success-box p  { color:var(--gray-500); margin-bottom:6px; font-size:.9rem; }
+    .order-num-box { background:var(--gray-100); border-radius:var(--radius); padding:10px 24px; font-weight:800; font-size:1.15rem; display:inline-block; margin:14px 0; color:var(--green); letter-spacing:.04em; }
+    .wa-notify-box { background:#f0fdf4; border:1px solid #bbf7d0; border-radius:var(--radius); padding:12px 16px; font-size:.82rem; color:#166534; margin-top:14px; }
+    @media(max-width:900px){ .checkout-grid{grid-template-columns:1fr;} .sum-sidebar{position:static;} }
+    @media(max-width:600px){ .two-col{grid-template-columns:1fr;} }
+  </style>
+</head>
+<body>
+<header class="site-header">
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini Logo" onerror="this.style.cssText='width:44px;height:44px;border-radius:50%;background:var(--green);'">
+      <div class="logo-text">
+        <strong>Ayini <span style="color:var(--amber)">Home</span> 🌿</strong>
+        <span>Homemade · Natural · Coimbatore</span>
+      </div>
+    </a>
+    <nav class="header-actions">
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html">← Back to Cart</a>
+    </nav>
+  </div>
+</header>
+
+<div class="page-hero">
+  <div class="container">
+    <h1>✅ Checkout</h1>
+    <p>Complete your order in just a few steps</p>
+    <div class="breadcrumb"><a href="index.html">Home</a><span>›</span><a href="cart.html">Cart</a><span>›</span><span>Checkout</span></div>
+  </div>
+</div>
+
+<div class="checkout-page">
+  <div class="container">
+    <div class="checkout-grid">
+
+      <!-- LEFT COLUMN -->
+      <div>
+
+        <!-- Step 1: Delivery Address -->
+        <div class="co-card">
+          <div class="co-card-head">
+            <div class="step">1</div>
+            <h3>📍 Delivery Address</h3>
+          </div>
+          <div class="co-card-body">
+            <div id="savedAddrs"></div>
+            <span class="add-addr-toggle" id="addAddrToggle" onclick="toggleAddrForm()">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H13V5h-2v6H5v2h6v6h2v-6h6v-2z"/></svg>
+              Add New Address
+            </span>
+            <div class="addr-form" id="addrForm">
+              <div class="two-col">
+                <div class="fg">
+                  <label>Full Name *</label>
+                  <input type="text" id="addrName" placeholder="Recipient name">
+                </div>
+                <div class="fg">
+                  <label>Phone *</label>
+                  <input type="tel" id="addrPhone" placeholder="10-digit mobile" maxlength="10">
+                </div>
+              </div>
+              <div class="fg">
+                <label>Address Line 1 *</label>
+                <input type="text" id="addrLine1" placeholder="House no., Street, Area">
+              </div>
+              <div class="fg">
+                <label>Address Line 2 <span style="color:var(--gray-400)">(Optional)</span></label>
+                <input type="text" id="addrLine2" placeholder="Landmark, nearby area">
+              </div>
+              <div class="two-col">
+                <div class="fg">
+                  <label>City *</label>
+                  <input type="text" id="addrCity" placeholder="City" value="Coimbatore">
+                </div>
+                <div class="fg">
+                  <label>State *</label>
+                  <select id="addrState">
+                    <option value="">Select State</option>
+                    <option value="Tamil Nadu" selected>Tamil Nadu</option>
+                    <option value="Kerala">Kerala</option>
+                    <option value="Karnataka">Karnataka</option>
+                    <option value="Andhra Pradesh">Andhra Pradesh</option>
+                    <option value="Telangana">Telangana</option>
+                    <option value="Maharashtra">Maharashtra</option>
+                    <option value="Delhi">Delhi</option>
+                    <option value="Other">Other</option>
+                  </select>
+                </div>
+              </div>
+              <div class="fg" style="max-width:180px;">
+                <label>Pincode *</label>
+                <input type="text" id="addrPincode" placeholder="6-digit pincode" maxlength="6">
+              </div>
+              <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;cursor:pointer;color:var(--gray-600);">
+                <input type="checkbox" id="saveAddr" style="accent-color:var(--green);width:16px;height:16px;"> Save this address for future orders
+              </label>
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 2: Payment -->
+        <div class="co-card">
+          <div class="co-card-head">
+            <div class="step">2</div>
+            <h3>💳 Payment Method</h3>
+          </div>
+          <div class="co-card-body">
+            <div class="pay-opt selected" id="pay-cod" onclick="selectPayment('cod')">
+              <input type="radio" class="pay-radio" name="pay" value="cod" checked>
+              <div class="pay-icon-box">💵</div>
+              <div class="pay-info">
+                <h4>Cash on Delivery</h4>
+                <p>Pay when your order arrives at your door</p>
+              </div>
+            </div>
+            <div class="pay-opt" id="pay-razorpay" onclick="selectPayment('razorpay')">
+              <input type="radio" class="pay-radio" name="pay" value="razorpay">
+              <div class="pay-icon-box">📱</div>
+              <div class="pay-info">
+                <h4>Online Payment</h4>
+                <p>UPI, Debit/Credit Cards, Net Banking via Razorpay</p>
+              </div>
+            </div>
+            <div class="razorpay-note" id="razorpayNote">
+              ⚡ You'll be redirected to Razorpay's secure payment gateway after clicking Place Order.
+            </div>
+          </div>
+        </div>
+
+        <!-- Step 3: Notes -->
+        <div class="co-card">
+          <div class="co-card-head">
+            <div class="step">3</div>
+            <h3>📝 Order Notes <span style="font-size:.8rem;font-weight:400;color:var(--gray-400)">(Optional)</span></h3>
+          </div>
+          <div class="co-card-body">
+            <textarea class="notes-area" id="orderNotes" rows="3" placeholder="Special delivery instructions, preferred delivery time, packaging requests…"></textarea>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- RIGHT COLUMN: Summary -->
+      <div>
+        <div class="sum-sidebar">
+          <h3>🧾 Order Summary</h3>
+          <div id="orderItemsList"><div class="spinner" style="margin:16px auto;width:24px;height:24px;border-width:2px;"></div></div>
+          <div class="sum-divider"></div>
+          <div class="sum-row"><span>Subtotal</span><span id="oSubtotal">₹0</span></div>
+          <div class="sum-row"><span>Shipping</span><span id="oShipping">₹50</span></div>
+          <div class="sum-row disc" id="oDiscRow" style="display:none"><span>Discount</span><span id="oDiscount">–₹0</span></div>
+          <div class="sum-row total"><span>Total</span><span id="oTotal">₹0</span></div>
+          <button class="place-btn" id="placeBtn" onclick="placeOrder()">
+            🎉 Place Order
+          </button>
+          <div class="secure-note">
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="currentColor"><path d="M12 1L3 5v6c0 5.55 3.84 10.74 9 12 5.16-1.26 9-6.45 9-12V5l-9-4z"/></svg>
+            Secure & encrypted checkout
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</div>
+
+<!-- Success Overlay -->
+<div class="success-overlay" id="successOverlay">
+  <div class="success-box">
+    <div class="success-icon">🎉</div>
+    <h2>Order Placed!</h2>
+    <p>Thank you for shopping with Ayini Home Products.</p>
+    <p style="margin-top:4px;">Your order number:</p>
+    <div class="order-num-box" id="orderNum">—</div>
+    <div class="wa-notify-box">
+      📱 WhatsApp notification sent to our team. We'll confirm your order shortly!
+    </div>
+    <div style="display:flex;gap:10px;margin-top:20px;flex-wrap:wrap;justify-content:center;">
+      <a href="orders.html" class="btn btn-primary">View My Orders</a>
+      <a href="index.html" class="btn btn-outline">Continue Shopping</a>
+    </div>
+  </div>
+</div>
+
+<script src="api.js"></script>
+<script>
+let cartData = null, selectedAddrId = null, payMethod = 'cod';
+const params = new URLSearchParams(location.search);
+const appliedCoupon = params.get('coupon') || '';
+const appliedDiscount = parseInt(params.get('discount') || '0');
+
+function selectPayment(method) {
+  payMethod = method;
+  ['cod','razorpay'].forEach(m => {
+    const el = document.getElementById('pay-' + m);
+    el.classList.toggle('selected', m === method);
+    el.querySelector('input').checked = (m === method);
+  });
+  document.getElementById('razorpayNote').style.display = method === 'razorpay' ? 'block' : 'none';
+}
+
+function toggleAddrForm() {
+  const form = document.getElementById('addrForm');
+  const toggle = document.getElementById('addAddrToggle');
+  const open = form.classList.contains('show');
+  form.classList.toggle('show', !open);
+  toggle.innerHTML = open
+    ? '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H13V5h-2v6H5v2h6v6h2v-6h6v-2z"/></svg> Add New Address'
+    : '− Hide Form';
+  if (!open) { selectedAddrId = null; document.querySelectorAll('.addr-card').forEach(c => c.classList.remove('selected')); }
+}
+
+function selectAddr(id) {
+  selectedAddrId = id;
+  document.querySelectorAll('.addr-card').forEach(c => c.classList.remove('selected'));
+  document.getElementById('addr-' + id).classList.add('selected');
+  document.getElementById('addrForm').classList.remove('show');
+  document.getElementById('addAddrToggle').innerHTML = '<svg width="14" height="14" viewBox="0 0 24 24" fill="currentColor"><path d="M19 11H13V5h-2v6H5v2h6v6h2v-6h6v-2z"/></svg> Add New Address';
+}
+
+async function loadAddresses() {
+  const el = document.getElementById('savedAddrs');
+  if (!Auth.isLoggedIn()) return;
+  try {
+    const addrs = await AddressAPI.getAll();
+    if (!addrs.length) { el.innerHTML = ''; toggleAddrForm(); return; }
+    el.innerHTML = addrs.map(a => `
+      <div class="addr-card ${a.is_default ? 'selected' : ''}" id="addr-${a.id}" onclick="selectAddr(${a.id})">
+        <div>
+          <h4>${a.name} ${a.is_default ? '<span class="default-badge">Default</span>' : ''}</h4>
+          <p>${a.line1}${a.line2 ? ', ' + a.line2 : ''}, ${a.city}, ${a.state} – ${a.pincode}</p>
+          <p class="addr-phone">📞 ${a.phone}</p>
+        </div>
+        <input type="radio" class="addr-radio" name="addr" ${a.is_default ? 'checked' : ''}>
+      </div>`).join('');
+    const def = addrs.find(a => a.is_default) || addrs[0];
+    if (def) selectedAddrId = def.id;
+  } catch(e) { el.innerHTML = ''; }
+}
+
+async function loadCart() {
+  try {
+    cartData = await CartAPI.get();
+    if (!cartData.items.length) { alert('Your cart is empty!'); window.location.href = 'cart.html'; return; }
+    const sub  = cartData.subtotal;
+    const ship = cartData.shipping;
+    const disc = appliedDiscount;
+    document.getElementById('orderItemsList').innerHTML = cartData.items.map(i => `
+      <div class="order-item-row">
+        <span class="oi-name">${i.name} <strong style="color:var(--gray-400)">×${i.quantity}</strong></span>
+        <span class="oi-price">₹${(i.price * i.quantity).toFixed(0)}</span>
+      </div>`).join('');
+    document.getElementById('oSubtotal').textContent = '₹' + sub.toFixed(0);
+    document.getElementById('oShipping').textContent = ship === 0 ? 'FREE 🎉' : '₹' + ship;
+    document.getElementById('oTotal').textContent = '₹' + Math.max(0, sub + ship - disc).toFixed(0);
+    if (disc > 0) {
+      document.getElementById('oDiscRow').style.display = 'flex';
+      document.getElementById('oDiscount').textContent = '–₹' + disc;
+    }
+  } catch(e) { showToast(e.message, true); }
+}
+
+async function getOrCreateAddress() {
+  if (selectedAddrId) return selectedAddrId;
+
+  const name    = document.getElementById('addrName').value.trim();
+  const phone   = document.getElementById('addrPhone').value.trim();
+  const line1   = document.getElementById('addrLine1').value.trim();
+  const line2   = document.getElementById('addrLine2').value.trim();
+  const city    = document.getElementById('addrCity').value.trim();
+  const state   = document.getElementById('addrState').value;
+  const pincode = document.getElementById('addrPincode').value.trim();
+  const save    = document.getElementById('saveAddr').checked;
+
+  document.querySelectorAll('.fg input, .fg select').forEach(el => el.classList.remove('err'));
+
+  if (!name || !phone || !line1 || !city || !state || !pincode) {
+    showToast('Please fill all required address fields.', true);
+    if (!name)    document.getElementById('addrName').classList.add('err');
+    if (!phone)   document.getElementById('addrPhone').classList.add('err');
+    if (!line1)   document.getElementById('addrLine1').classList.add('err');
+    if (!city)    document.getElementById('addrCity').classList.add('err');
+    if (!state)   document.getElementById('addrState').classList.add('err');
+    if (!pincode) document.getElementById('addrPincode').classList.add('err');
+    return null;
+  }
+
+  if (!/^[6-9]\d{9}$/.test(phone)) {
+    showToast('Enter a valid 10-digit phone number.', true);
+    document.getElementById('addrPhone').classList.add('err');
+    return null;
+  }
+
+  if (!/^\d{6}$/.test(pincode)) {
+    showToast('Enter a valid 6-digit pincode.', true);
+    document.getElementById('addrPincode').classList.add('err');
+    return null;
+  }
+
+  try {
+    const addr = await AddressAPI.add({ name, phone, line1, line2, city, state, pincode, is_default: save });
+    return addr.id;
+  } catch(e) {
+    showToast(e.message || 'Could not save address.', true);
+    return null;
+  }
+}
+
+async function placeOrder() {
+  if (!Auth.isLoggedIn()) { window.location.href = 'login.html'; return; }
+  const btn = document.getElementById('placeBtn');
+  btn.innerHTML = '⏳ Placing Order…'; btn.disabled = true;
+  try {
+    const addressId = await getOrCreateAddress();
+    if (!addressId) {
+      showToast('Please add a delivery address.', true);
+      btn.innerHTML = '🎉 Place Order'; btn.disabled = false;
+      return;
+    }
+    const notes = document.getElementById('orderNotes').value.trim();
+    const result = await OrdersAPI.place(addressId, payMethod, {
+      coupon_code: appliedCoupon || undefined,
+      notes: notes || undefined
+    });
+    const user = Auth.getUser();
+    const waMsg = encodeURIComponent(
+      '🛒 *NEW ORDER — Ayini*\n' +
+      '─────────────────────\n' +
+      'Order #: ' + result.order_number + '\n' +
+      'Customer: ' + (user ? user.name : 'Unknown') + '\n' +
+      'Phone: ' + (user ? user.phone || '—' : '—') + '\n' +
+      'Payment: ' + payMethod.toUpperCase() + '\n\n' +
+      '*Total: ₹' + result.total + '*'
+    );
+    window.open('https://wa.me/917397130039?text=' + waMsg, '_blank');
+    document.getElementById('orderNum').textContent = result.order_number;
+    document.getElementById('successOverlay').classList.add('show');
+  } catch(e) {
+    showToast(e.message || 'Could not place order.', true);
+    btn.innerHTML = '🎉 Place Order'; btn.disabled = false;
+  }
+}
+
+document.addEventListener('DOMContentLoaded', async () => {
+  if (!Auth.isLoggedIn()) { alert('Please login to checkout.'); window.location.href = 'login.html'; return; }
+  await Promise.all([loadCart(), loadAddresses()]);
+});
+</script>
+</body>
+</html>

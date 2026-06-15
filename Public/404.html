@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1.0">
+  <title>Page Not Found – Ayini Home Products</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body { background:var(--cream); min-height:100vh; display:flex; flex-direction:column; }
+    .notfound-page { flex:1; display:flex; align-items:center; justify-content:center; padding:60px 20px; }
+    .notfound-box { text-align:center; max-width:520px; }
+    .notfound-visual { position:relative; margin-bottom:32px; }
+    .notfound-num { font-family:var(--font-display); font-size:clamp(6rem,18vw,9rem); font-weight:800; color:var(--gray-100); line-height:1; position:relative; }
+    .notfound-emoji { position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); font-size:clamp(3rem,8vw,5rem); animation:float 3s ease-in-out infinite; }
+    @keyframes float { 0%,100%{transform:translate(-50%,-50%) translateY(0)} 50%{transform:translate(-50%,-50%) translateY(-12px)} }
+    .notfound-box h1 { font-size:clamp(1.5rem,3vw,2rem); color:var(--green); margin-bottom:12px; }
+    .notfound-box p  { color:var(--gray-500); font-size:.97rem; line-height:1.7; margin-bottom:28px; }
+    .notfound-actions { display:flex; gap:12px; justify-content:center; flex-wrap:wrap; margin-bottom:36px; }
+    .quick-links { display:flex; flex-wrap:wrap; gap:8px; justify-content:center; }
+    .ql-item { padding:8px 16px; background:white; border:1.5px solid var(--gray-200); border-radius:20px; font-size:.82rem; color:var(--gray-600); text-decoration:none; transition:all var(--transition); }
+    .ql-item:hover { border-color:var(--green); color:var(--green); background:#f0fdf4; }
+    .ql-label { font-size:.76rem; color:var(--gray-400); text-align:center; margin-bottom:10px; }
+  </style>
+</head>
+<body>
+
+<header class="site-header">
+  <div class="header-top">
+    <a href="index.html" class="logo">
+      <img src="https://raw.githubusercontent.com/Sanjay123ps/ayini-website/main/AYINI.png" alt="Ayini" onerror="this.style.cssText='width:44px;height:44px;border-radius:50%;background:var(--green);'">
+      <div class="logo-text">
+        <strong>Ayini <span style="color:var(--amber)">Home</span> 🌿</strong>
+        <span>Homemade · Natural · Coimbatore</span>
+      </div>
+    </a>
+    <nav class="header-actions">
+      <a href="login.html" id="loginLink">Login</a>
+      <a href="cart.html" class="cart-btn">🛒 Cart <span class="cart-badge" id="cartBadge">0</span></a>
+    </nav>
+  </div>
+</header>
+
+<div class="notfound-page">
+  <div class="notfound-box fade-up">
+    <div class="notfound-visual">
+      <div class="notfound-num">404</div>
+      <div class="notfound-emoji">🌿</div>
+    </div>
+    <h1>Oops! Page Not Found</h1>
+    <p>Looks like this page wandered off into the spice garden. Don't worry — let's get you back to something good.</p>
+    <div class="notfound-actions">
+      <a href="index.html" class="btn btn-primary">🏠 Go Home</a>
+      <a href="masala.html" class="btn btn-amber">🛒 Shop Products</a>
+      <a href="contact.html" class="btn btn-outline">📞 Contact Us</a>
+    </div>
+    <div class="ql-label">Or browse a category:</div>
+    <div class="quick-links">
+      <a href="masala.html"  class="ql-item">🌶️ Masalas</a>
+      <a href="millets.html" class="ql-item">🌾 Millets</a>
+      <a href="oil.html"     class="ql-item">🫙 Oils</a>
+      <a href="flour.html"   class="ql-item">🌾 Flour</a>
+      <a href="noodles.html" class="ql-item">🍜 Noodles</a>
+      <a href="soap.html"    class="ql-item">🧼 Soaps</a>
+    </div>
+  </div>
+</div>
+
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-bottom"><p>© 2025 Ayini Home Products. All rights reserved.</p><p>Made with ❤️ in Coimbatore</p></div>
+  </div>
+</footer>
+
+<script src="api.js"></script>
+</body>
+</html>
