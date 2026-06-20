@@ -1,10 +1,10 @@
 const express = require('express');
 const router  = express.Router();
 const { run, get, all, runInsert } = require('../db');
-const auth    = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 
 // GET /api/wishlist
-router.get('/', auth, (req, res) => {
+router.get('/', authenticate, (req, res) => {
   const items = all(`
     SELECT w.id, w.product_id, w.added_at, p.name, p.price, p.unit, p.emoji, p.badge, p.category
     FROM wishlist w
@@ -16,7 +16,7 @@ router.get('/', auth, (req, res) => {
 });
 
 // POST /api/wishlist
-router.post('/', auth, (req, res) => {
+router.post('/', authenticate, (req, res) => {
   try {
     const { product_id } = req.body;
     if (!product_id) return res.status(400).json({ error: 'product_id is required.' });
@@ -32,7 +32,7 @@ router.post('/', auth, (req, res) => {
 });
 
 // DELETE /api/wishlist/:product_id
-router.delete('/:product_id', auth, (req, res) => {
+router.delete('/:product_id', authenticate, (req, res) => {
   try {
     run('DELETE FROM wishlist WHERE user_id = ? AND product_id = ?', [req.user.id, req.params.product_id]);
     res.json({ message: 'Removed from wishlist.' });

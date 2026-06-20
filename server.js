@@ -3,7 +3,9 @@ const express   = require('express');
 const cors      = require('cors');
 const rateLimit = require('express-rate-limit');
 const { getDB } = require('./db');
+const { initializeTables } = require('./migrations/001_add_ecommerce_features');
 
+// ✅ DECLARE APP FIRST - before any app.use() calls
 const app  = express();
 const PORT = process.env.PORT || 5000;
 
@@ -15,6 +17,7 @@ const allowedOrigins = [
   'http://localhost:8080',
   'http://127.0.0.1:3000',
 ];
+
 app.use(cors({
   origin: (origin, cb) => {
     if (!origin) return cb(null, true);
@@ -48,6 +51,7 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', service: 'Ayini API', timestamp: new Date().toISOString() });
 });
 
+// ✅ All existing routes
 app.use('/api/auth',      require('./routes/auth'));
 app.use('/api/products',  require('./routes/products'));
 app.use('/api/cart',      require('./routes/cart'));
@@ -58,6 +62,10 @@ app.use('/api/contact',   require('./routes/contact'));
 app.use('/api/payment',   require('./routes/payment'));
 app.use('/api/admin',     require('./routes/admin'));
 
+// ✅ NEW ECOMMERCE ROUTES (after existing routes)
+app.use('/api', require('./routes/reviews'));
+app.use('/api', require('./routes/search'));
+
 app.use('/api/*', (req, res) => {
   res.status(404).json({ error: `Route ${req.method} ${req.path} not found.` });
 });
@@ -67,10 +75,17 @@ app.use((err, req, res, next) => {
   res.status(500).json({ error: err.message || 'Internal server error.' });
 });
 
+// ✅ ASYNC START - Database initialization happens HERE
 async function start() {
   try {
-    await getDB();
+    // Get database instance (this initializes it)
+    const db = await getDB();
     console.log('✅ Database ready');
+    
+    // ✅ NOW initialize new ecommerce tables (after db is ready)
+    initializeTables(db);
+    console.log('✅ Ecommerce tables initialized');
+    
     app.listen(PORT, () => {
       console.log(`🚀 Ayini API running → http://localhost:${PORT}`);
       console.log(`📦 Environment: ${process.env.NODE_ENV || 'development'}`);
@@ -80,4 +95,5 @@ async function start() {
     process.exit(1);
   }
 }
+
 start();

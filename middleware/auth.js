@@ -1,22 +1,48 @@
+// middleware/auth.js - Authentication middleware for protected routes
+
 const jwt = require('jsonwebtoken');
-const { get } = require('../db');
 
-function authMiddleware(req, res, next) {
-  const header = req.headers['authorization'];
-  if (!header || !header.startsWith('Bearer ')) {
-    return res.status(401).json({ error: 'No token provided. Please login.' });
-  }
-  const token = header.split(' ')[1];
-  try {
-    const decoded = jwt.verify(token, process.env.JWT_SECRET || 'ayini-dev-secret');
-    const user = get('SELECT id, name, email, phone, role FROM users WHERE id = ?', [decoded.id]);
-    if (!user) return res.status(401).json({ error: 'User not found.' });
-    req.user = user;
-    next();
-  } catch (e) {
-    if (e.name === 'TokenExpiredError') return res.status(401).json({ error: 'Session expired. Please login again.' });
-    return res.status(401).json({ error: 'Invalid token.' });
-  }
-}
+// Middleware to authenticate user from JWT token
+const authenticate = (req, res, next) => {
+    try {
+        // Get token from Authorization header
+        const authHeader = req.headers.authorization;
+        
+        if (!authHeader || !authHeader.startsWith('Bearer ')) {
+            return res.status(401).json({ error: 'No token provided' });
+        }
 
-module.exports = authMiddleware;  
+        const token = authHeader.substring(7); // Remove 'Bearer ' prefix
+
+        // Verify token
+        const decoded = jwt.verify(token, process.env.JWT_SECRET || 'your-secret-key');
+        
+        // Attach user info to request
+        // ✅ FIXED: Use decoded.id (not decoded.userId)
+        req.user = {
+            id: decoded.id,
+            email: decoded.email,
+            role: decoded.role
+        };
+
+        next();
+    } catch (error) {
+        console.error('Auth error:', error.message);
+        res.status(401).json({ error: 'Invalid or expired token' });
+    }
+};
+
+// Middleware to check if user is admin
+const authenticateAdmin = (req, res, next) => {
+    authenticate(req, res, () => {
+        if (req.user.role !== 'admin') {
+            return res.status(403).json({ error: 'Admin access required' });
+        }
+        next();
+    });
+};
+
+module.exports = {
+    authenticate,
+    authenticateAdmin
+};

@@ -1,10 +1,10 @@
 const express = require('express');
 const router  = express.Router();
 const { run, get, all, runInsert } = require('../db');
-const auth    = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 
 // GET /api/addresses
-router.get('/', auth, (req, res) => {
+router.get('/', authenticate, (req, res) => {
   const addrs = all(
     'SELECT * FROM addresses WHERE user_id = ? ORDER BY is_default DESC, id DESC',
     [req.user.id]
@@ -13,7 +13,7 @@ router.get('/', auth, (req, res) => {
 });
 
 // POST /api/addresses
-router.post('/', auth, (req, res) => {
+router.post('/', authenticate, (req, res) => {
   try {
     const { name, phone, line1, line2, city, state, pincode, is_default } = req.body;
     if (!name || !phone || !line1 || !city || !state || !pincode)
@@ -38,7 +38,7 @@ router.post('/', auth, (req, res) => {
 });
 
 // PUT /api/addresses/:id/default
-router.put('/:id/default', auth, (req, res) => {
+router.put('/:id/default', authenticate, (req, res) => {
   try {
     const addr = get('SELECT id FROM addresses WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
     if (!addr) return res.status(404).json({ error: 'Address not found.' });
@@ -51,7 +51,7 @@ router.put('/:id/default', auth, (req, res) => {
 });
 
 // DELETE /api/addresses/:id
-router.delete('/:id', auth, (req, res) => {
+router.delete('/:id', authenticate, (req, res) => {
   try {
     const addr = get('SELECT * FROM addresses WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
     if (!addr) return res.status(404).json({ error: 'Address not found.' });

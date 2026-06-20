@@ -3,7 +3,7 @@ const router   = express.Router();
 const crypto   = require('crypto');
 const Razorpay = require('razorpay');
 const { run, get, all, runInsert, calcShipping, validateCoupon, incrementCouponUse, generateOrderNumber } = require('../db');
-const auth     = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 const { sendEmail } = require('../mailer');
 
 const razorpay = new Razorpay({
@@ -12,7 +12,7 @@ const razorpay = new Razorpay({
 });
 
 // POST /api/payment/create-order
-router.post('/create-order', auth, async (req, res) => {
+router.post('/create-order', authenticate, async (req, res) => {
   try {
     const { address_id, coupon_code, notes } = req.body;
     if (!address_id) return res.status(400).json({ error: 'Delivery address is required.' });
@@ -62,7 +62,7 @@ router.post('/create-order', auth, async (req, res) => {
 });
 
 // POST /api/payment/verify
-router.post('/verify', auth, async (req, res) => {
+router.post('/verify', authenticate, async (req, res) => {
   try {
     const {
       razorpay_order_id, razorpay_payment_id, razorpay_signature,

@@ -1,7 +1,7 @@
 const express  = require('express');
 const router   = express.Router();
 const { run, get, all, runInsert, calcShipping, validateCoupon, incrementCouponUse, generateOrderNumber } = require('../db');
-const auth     = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 const { sendEmail } = require('../mailer');
 
 function getOrderDetail(orderId) {
@@ -30,7 +30,7 @@ function getOrderDetail(orderId) {
 }
 
 // POST /api/orders
-router.post('/', auth, async (req, res) => {
+router.post('/', authenticate, async (req, res) => {
   try {
     const { address_id, payment_method = 'cod', coupon_code, notes } = req.body;
     if (!address_id) return res.status(400).json({ error: 'Delivery address is required.' });
@@ -124,7 +124,7 @@ router.post('/', auth, async (req, res) => {
 });
 
 // GET /api/orders/my
-router.get('/my', auth, (req, res) => {
+router.get('/my', authenticate, (req, res) => {
   const orders = all(`
     SELECT o.*, COUNT(oi.id) as item_count
     FROM orders o
@@ -137,7 +137,7 @@ router.get('/my', auth, (req, res) => {
 });
 
 // GET /api/orders/:id
-router.get('/:id', auth, (req, res) => {
+router.get('/:id', authenticate, (req, res) => {
   const order = getOrderDetail(req.params.id);
   if (!order) return res.status(404).json({ error: 'Order not found.' });
   if (order.user_id !== req.user.id && req.user.role !== 'admin')
@@ -146,7 +146,7 @@ router.get('/:id', auth, (req, res) => {
 });
 
 // POST /api/orders/:id/cancel
-router.post('/:id/cancel', auth, (req, res) => {
+router.post('/:id/cancel', authenticate, (req, res) => {
   try {
     const order = get('SELECT * FROM orders WHERE id = ? AND user_id = ?', [req.params.id, req.user.id]);
     if (!order) return res.status(404).json({ error: 'Order not found.' });

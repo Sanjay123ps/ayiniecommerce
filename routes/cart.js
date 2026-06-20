@@ -1,7 +1,7 @@
 const express = require('express');
 const router  = express.Router();
 const { run, get, all, runInsert, calcShipping, validateCoupon } = require('../db');
-const auth    = require('../middleware/auth');
+const { authenticate } = require('../middleware/auth');
 
 function buildCart(userId) {
   const items = all(`
@@ -17,12 +17,12 @@ function buildCart(userId) {
 }
 
 // GET /api/cart
-router.get('/', auth, (req, res) => {
+router.get('/', authenticate, (req, res) => {
   res.json(buildCart(req.user.id));
 });
 
 // POST /api/cart
-router.post('/', auth, (req, res) => {
+router.post('/', authenticate, (req, res) => {
   try {
     const { product_id, quantity = 1 } = req.body;
     if (!product_id) return res.status(400).json({ error: 'product_id is required.' });
@@ -44,7 +44,7 @@ router.post('/', auth, (req, res) => {
 });
 
 // PUT /api/cart/:product_id
-router.put('/:product_id', auth, (req, res) => {
+router.put('/:product_id', authenticate, (req, res) => {
   try {
     const { quantity } = req.body;
     const qty = parseInt(quantity);
@@ -62,7 +62,7 @@ router.put('/:product_id', auth, (req, res) => {
 });
 
 // DELETE /api/cart/:product_id
-router.delete('/:product_id', auth, (req, res) => {
+router.delete('/:product_id', authenticate, (req, res) => {
   try {
     run('DELETE FROM cart WHERE user_id = ? AND product_id = ?',
         [req.user.id, req.params.product_id]);
@@ -73,7 +73,7 @@ router.delete('/:product_id', auth, (req, res) => {
 });
 
 // DELETE /api/cart
-router.delete('/', auth, (req, res) => {
+router.delete('/', authenticate, (req, res) => {
   try {
     run('DELETE FROM cart WHERE user_id = ?', [req.user.id]);
     res.json({ items: [], subtotal: 0, shipping: 50, item_count: 0 });
@@ -83,7 +83,7 @@ router.delete('/', auth, (req, res) => {
 });
 
 // POST /api/cart/coupon
-router.post('/coupon', auth, (req, res) => {
+router.post('/coupon', authenticate, (req, res) => {
   try {
     const { code } = req.body;
     if (!code) return res.status(400).json({ error: 'Coupon code is required.' });
